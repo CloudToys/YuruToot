@@ -13,13 +13,13 @@ import {
   UNFAVOURITE_FAIL,
   BOOKMARK_REQUEST,
   BOOKMARK_FAIL,
+  UNBOOKMARK_REQUEST,
+  UNBOOKMARK_FAIL,
   REACTION_UPDATE,
   REACTION_ADD_FAIL,
   REACTION_REMOVE_FAIL,
   REACTION_ADD_REQUEST,
   REACTION_REMOVE_REQUEST,
-  UNBOOKMARK_REQUEST,
-  UNBOOKMARK_FAIL,
 } from '../actions/interactions';
 import {
   STATUS_MUTE_SUCCESS,
@@ -45,27 +45,6 @@ const deleteStatus = (state, id, references) => {
   });
 
   return state.delete(id);
-};
-
-const statusTranslateSuccess = (state, id, translation) => {
-  return state.withMutations(map => {
-    map.setIn([id, 'translation'], fromJS(normalizeStatusTranslation(translation, map.get(id))));
-
-    const list = map.getIn([id, 'media_attachments']);
-    if (translation.media_attachments && list) {
-      translation.media_attachments.forEach(item => {
-        const index = list.findIndex(i => i.get('id') === item.id);
-        map.setIn([id, 'media_attachments', index, 'translation'], fromJS({ description: item.description }));
-      });
-    }
-  });
-};
-
-const statusTranslateUndo = (state, id) => {
-  return state.withMutations(map => {
-    map.deleteIn([id, 'translation']);
-    map.getIn([id, 'media_attachments']).forEach((item, index) => map.deleteIn([id, 'media_attachments', index, 'translation']));
-  });
 };
 
 const updateReaction = (state, id, name, updater) => state.update(
@@ -104,6 +83,27 @@ const removeReaction = (state, id, name) => updateReaction(
   name,
   x => x.set('me', false).update('count', n => n - 1),
 );
+
+const statusTranslateSuccess = (state, id, translation) => {
+  return state.withMutations(map => {
+    map.setIn([id, 'translation'], fromJS(normalizeStatusTranslation(translation, map.get(id))));
+
+    const list = map.getIn([id, 'media_attachments']);
+    if (translation.media_attachments && list) {
+      translation.media_attachments.forEach(item => {
+        const index = list.findIndex(i => i.get('id') === item.id);
+        map.setIn([id, 'media_attachments', index, 'translation'], fromJS({ description: item.description }));
+      });
+    }
+  });
+};
+
+const statusTranslateUndo = (state, id) => {
+  return state.withMutations(map => {
+    map.deleteIn([id, 'translation']);
+    map.getIn([id, 'media_attachments']).forEach((item, index) => map.deleteIn([id, 'media_attachments', index, 'translation']));
+  });
+};
 
 const initialState = ImmutableMap();
 
