@@ -638,16 +638,6 @@ body,
   input.button {
     margin: 0 5px 5px 0;
   }
-
-  .media-spoiler-toggle-buttons {
-    margin-inline-start: auto;
-
-    .button {
-      overflow: visible;
-      margin: 0 0 5px 5px;
-      float: right;
-    }
-  }
 }
 
 .back-link {
@@ -1070,6 +1060,7 @@ a.name-tag,
     display: flex;
     justify-content: space-between;
     margin-bottom: 0;
+    word-break: break-word;
   }
 
   &__permissions {
@@ -1330,6 +1321,9 @@ a.sparkline {
 
     &__label {
       padding: 15px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
     }
 
     &__rules {
@@ -1340,6 +1334,9 @@ a.sparkline {
   &__rule {
     cursor: pointer;
     padding: 15px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
   }
 }
 
