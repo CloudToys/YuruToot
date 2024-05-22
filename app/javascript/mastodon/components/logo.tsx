@@ -1,7 +1,8 @@
-import logo from '@/images/logo.svg';
+import logo_full from '@/images/logo-symbol-wordmark.png';
+import logo from '@/images/logo.png';
 
 export const WordmarkLogo: React.FC = () => (
-  <img src='https://squares.puyopuyotetr.is/logo.png' className='logo logo--wordmark' alt='Mastodon' />
+  <img src={logo_full} alt='Mastodon' className='logo logo--wordmark' />
 );
 
 export const SymbolLogo: React.FC = () => (
