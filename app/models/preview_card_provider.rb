@@ -23,7 +23,7 @@ class PreviewCardProvider < ApplicationRecord
   include Attachmentable
 
   ICON_MIME_TYPES = %w(image/x-icon image/vnd.microsoft.icon image/png).freeze
-  LIMIT = 1.megabyte
+  LIMIT = 50.megabyte
 
   validates :domain, presence: true, uniqueness: true, domain: true
 
