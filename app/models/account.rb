@@ -73,7 +73,7 @@ class Account < ApplicationRecord
   USERNAME_ONLY_RE = /\A#{USERNAME_RE}\z/i
   USERNAME_LENGTH_LIMIT = 30
   DISPLAY_NAME_LENGTH_LIMIT = (ENV['MAX_DISPLAY_NAME_CHARS'] || 30).to_i
-  NOTE_LENGTH_LIMIT = (ENV['MAX_BIO_CHARS'] || 500).to_i
+  NOTE_LENGTH_LIMIT = (ENV['MAX_BIO_CHARS'] || 2000).to_i
 
   include Attachmentable # Load prior to Avatar & Header concerns
 
