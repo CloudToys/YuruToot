@@ -1,19 +1,19 @@
 import PropTypes from 'prop-types';
-import { PureComponent } from 'react';
+import {PureComponent} from 'react';
 
-import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
+import {defineMessages, FormattedMessage, injectIntl} from 'react-intl';
 
-import { Link, withRouter } from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import SearchIcon from '@/material-icons/400-24px/search.svg?react';
-import { openModal } from 'mastodon/actions/modal';
-import { fetchServer } from 'mastodon/actions/server';
-import { Avatar } from 'mastodon/components/avatar';
-import { Icon } from 'mastodon/components/icon';
-import { WordmarkLogo, SymbolLogo } from 'mastodon/components/logo';
-import { registrationsOpen, me, sso_redirect } from 'mastodon/initial_state';
+import {openModal} from 'mastodon/actions/modal';
+import {fetchServer} from 'mastodon/actions/server';
+import {Avatar} from 'mastodon/components/avatar';
+import {Icon} from 'mastodon/components/icon';
+import {SymbolLogo} from 'mastodon/components/logo';
+import {me, registrationsOpen, sso_redirect} from 'mastodon/initial_state';
 
 const Account = connect(state => ({
   account: state.getIn(['accounts', me]),
@@ -108,7 +108,6 @@ class Header extends PureComponent {
     return (
       <div className='ui__header'>
         <Link to='/' className='ui__header__logo'>
-          <WordmarkLogo />
           <SymbolLogo />
         </Link>
 
