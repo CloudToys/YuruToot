@@ -18,8 +18,8 @@ pipeline {
             }
             environment {
                 DOCKER_REGISTRY = 'ghcr.io'
-                GITHUB_ORG = 'funamitech'
-                DOCKER_IMAGE = "${env.DOCKER_REGISTRY}/${env.GITHUB_ORG}/mastodon"
+                GITHUB_ORG = 'cloudtoys'
+                DOCKER_IMAGE = "${env.DOCKER_REGISTRY}/${env.GITHUB_ORG}/yurutoot"
                 GHCR_TOKEN = credentials('siliconforest-jenkins-github-pat-package-rw')
             }
             stages {
@@ -37,7 +37,7 @@ pipeline {
                                 env.DOCKER_LATEST = 'true'
                             }
                             env.GITHUB_REPOSITORY = "${params.URL}"
-                            env.SOURCE_BASE_URL = "https://github.com/funamitech/mastodon" // I'm lazy. Will fix it later
+                            env.SOURCE_BASE_URL = "https://github.com/CloudToys/YuruToot" // I'm lazy. Will fix it later
                             env.SOURCE_TAG = "${env.BRANCH_NAME}"
                         }
                     }
