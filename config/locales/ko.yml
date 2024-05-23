@@ -4,7 +4,7 @@ ko:
     about_mastodon_html: "동글동글 뿌요들과 함께하는 새로운 탈중앙화 연합 소셜 네트워킹 플랫폼"
     contact_missing: 미설정
     contact_unavailable: 없음
-    hosted_on: "%{domain}과 함께하는 글리치맛 소다"
+    hosted_on: "글리치맛 소다, 그리고 %{domain}"
     title: 정보
   accounts:
     follow: 팔로우
