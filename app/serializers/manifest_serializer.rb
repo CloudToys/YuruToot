@@ -27,7 +27,7 @@ class ManifestSerializer < ActiveModel::Serializer
 
   def icons
     SiteUpload::ANDROID_ICON_SIZES.map do |size|
-      src = site_icon_path('app_icon', size.to_i)
+      src = app_icon_path(size.to_i)
       src = URI.join(root_url, src).to_s if src.present?
 
       {
@@ -40,11 +40,11 @@ class ManifestSerializer < ActiveModel::Serializer
   end
 
   def theme_color
-    '#191b22'
+    '#7f6f79'
   end
 
   def background_color
-    '#191b22'
+    '#7f6f79'
   end
 
   def display
