@@ -1,19 +1,19 @@
 import PropTypes from 'prop-types';
-import { PureComponent } from 'react';
+import {PureComponent} from 'react';
 
-import { FormattedMessage, injectIntl } from 'react-intl';
+import {FormattedMessage, injectIntl} from 'react-intl';
 
 import classnames from 'classnames';
-import { Link, withRouter } from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import ChevronRightIcon from '@/material-icons/400-24px/chevron_right.svg?react';
-import { Icon }  from 'mastodon/components/icon';
+import {Icon} from 'mastodon/components/icon';
 import PollContainer from 'mastodon/containers/poll_container';
-import { identityContextPropShape, withIdentity } from 'mastodon/identity_context';
-import { autoPlayGif, languages as preloadedLanguages } from 'mastodon/initial_state';
+import {identityContextPropShape, withIdentity} from 'mastodon/identity_context';
+import {autoPlayGif, languages as preloadedLanguages} from 'mastodon/initial_state';
 
 
 const MAX_HEIGHT = 706; // 22px * 32 (+ 2px padding at the top)
@@ -116,8 +116,9 @@ class StatusContent extends PureComponent {
 
       if (mention) {
         link.addEventListener('click', this.onMentionClick.bind(this, mention), false);
-        link.setAttribute('title', `@${mention.get('acct')}`);
+        link.removeAttribute('title');
         link.setAttribute('href', `/@${mention.get('acct')}`);
+        link.setAttribute('data-hover-card-account', mention.get('id'));
       } else if (link.textContent[0] === '#' || (link.previousSibling && link.previousSibling.textContent && link.previousSibling.textContent[link.previousSibling.textContent.length - 1] === '#')) {
         link.addEventListener('click', this.onHashtagClick.bind(this, link.text), false);
         link.setAttribute('href', `/tags/${link.text.replace(/^#/, '')}`);

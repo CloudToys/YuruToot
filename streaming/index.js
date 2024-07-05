@@ -8,16 +8,16 @@ import url from 'node:url';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
-import { Redis } from 'ioredis';
-import { JSDOM } from 'jsdom';
+import {Redis} from 'ioredis';
+import {JSDOM} from 'jsdom';
 import pg from 'pg';
 import pgConnectionString from 'pg-connection-string';
-import WebSocket from 'ws';
+import {WebSocketServer} from 'ws';
 
-import { AuthenticationError, RequestError, extractStatusAndMessage as extractErrorStatusAndMessage } from './errors.js';
-import { logger, httpLogger, initializeLogLevel, attachWebsocketHttpLogger, createWebsocketLogger } from './logging.js';
-import { setupMetrics } from './metrics.js';
-import { isTruthy, normalizeHashtag, firstParam } from './utils.js';
+import {AuthenticationError, extractStatusAndMessage as extractErrorStatusAndMessage, RequestError} from './errors.js';
+import {attachWebsocketHttpLogger, createWebsocketLogger, httpLogger, initializeLogLevel, logger} from './logging.js';
+import {setupMetrics} from './metrics.js';
+import {firstParam, isTruthy, normalizeHashtag} from './utils.js';
 
 const environment = process.env.NODE_ENV || 'development';
 
@@ -289,7 +289,7 @@ const CHANNEL_NAMES = [
 const startServer = async () => {
   const pgPool = new pg.Pool(pgConfigFromEnv(process.env));
   const server = http.createServer();
-  const wss = new WebSocket.Server({ noServer: true });
+  const wss = new WebSocketServer({ noServer: true });
 
   // Set the X-Request-Id header on WebSockets:
   wss.on("headers", function onHeaders(headers, req) {

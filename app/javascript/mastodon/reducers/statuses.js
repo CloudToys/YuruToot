@@ -1,38 +1,31 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import {fromJS, Map as ImmutableMap} from 'immutable';
 
-import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer';
-import { normalizeStatusTranslation } from '../actions/importer/normalizer';
+import {timelineDelete} from 'mastodon/actions/timelines_typed';
+
+import {STATUS_IMPORT, STATUSES_IMPORT} from '../actions/importer';
+import {normalizeStatusTranslation} from '../actions/importer/normalizer';
 import {
-  FAVOURITE_REQUEST,
-  FAVOURITE_FAIL,
-  UNFAVOURITE_REQUEST,
-  UNFAVOURITE_FAIL,
-  BOOKMARK_REQUEST,
   BOOKMARK_FAIL,
-  UNBOOKMARK_REQUEST,
+  BOOKMARK_REQUEST,
+  FAVOURITE_FAIL,
+  FAVOURITE_REQUEST,
   UNBOOKMARK_FAIL,
-  REACTION_UPDATE,
-  REACTION_ADD_FAIL,
-  REACTION_REMOVE_FAIL,
-  REACTION_ADD_REQUEST,
-  REACTION_REMOVE_REQUEST,
+  UNBOOKMARK_REQUEST,
+  UNFAVOURITE_FAIL,
+  UNFAVOURITE_REQUEST,
 } from '../actions/interactions';
+import {reblog, unreblog,} from '../actions/interactions_typed';
 import {
-  reblog,
-  unreblog,
-} from '../actions/interactions_typed';
-import {
-  STATUS_MUTE_SUCCESS,
-  STATUS_UNMUTE_SUCCESS,
-  STATUS_REVEAL,
-  STATUS_HIDE,
   STATUS_COLLAPSE,
+  STATUS_FETCH_FAIL,
+  STATUS_FETCH_REQUEST,
+  STATUS_HIDE,
+  STATUS_MUTE_SUCCESS,
+  STATUS_REVEAL,
   STATUS_TRANSLATE_SUCCESS,
   STATUS_TRANSLATE_UNDO,
-  STATUS_FETCH_REQUEST,
-  STATUS_FETCH_FAIL,
+  STATUS_UNMUTE_SUCCESS,
 } from '../actions/statuses';
-import { TIMELINE_DELETE } from '../actions/timelines';
 
 const importStatus = (state, status) => state.set(status.id, fromJS(status));
 
@@ -156,8 +149,8 @@ export default function statuses(state = initialState, action) {
     });
   case STATUS_COLLAPSE:
     return state.setIn([action.id, 'collapsed'], action.isCollapsed);
-  case TIMELINE_DELETE:
-    return deleteStatus(state, action.id, action.references);
+  case timelineDelete.type:
+    return deleteStatus(state, action.payload.statusId, action.payload.references);
   case STATUS_TRANSLATE_SUCCESS:
     return statusTranslateSuccess(state, action.id, action.translation);
   case STATUS_TRANSLATE_UNDO:

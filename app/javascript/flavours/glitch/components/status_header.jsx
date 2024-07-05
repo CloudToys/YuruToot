@@ -1,13 +1,13 @@
 //  Package imports.
 import PropTypes from 'prop-types';
-import { PureComponent } from 'react';
+import {PureComponent} from 'react';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 //  Mastodon imports.
-import { Avatar } from './avatar';
-import { AvatarOverlay } from './avatar_overlay';
-import { DisplayName } from './display_name';
+import {Avatar} from './avatar';
+import {AvatarOverlay} from './avatar_overlay';
+import {DisplayName} from './display_name';
 
 export default class StatusHeader extends PureComponent {
 
@@ -51,6 +51,7 @@ export default class StatusHeader extends PureComponent {
         target='_blank'
         onClick={this.handleAccountClick}
         rel='noopener noreferrer'
+        data-hover-card-account={status.getIn(['account', 'id'])}
       >
         <div className='status__avatar'>
           {statusAvatar}

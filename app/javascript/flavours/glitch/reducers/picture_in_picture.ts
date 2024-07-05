@@ -1,11 +1,7 @@
-import type { Reducer } from '@reduxjs/toolkit';
+import type {Reducer} from '@reduxjs/toolkit';
 
-import {
-  deployPictureInPictureAction,
-  removePictureInPicture,
-} from 'flavours/glitch/actions/picture_in_picture';
-
-import { TIMELINE_DELETE } from '../actions/timelines';
+import {deployPictureInPictureAction, removePictureInPicture,} from 'flavours/glitch/actions/picture_in_picture';
+import {timelineDelete} from 'flavours/glitch/actions/timelines_typed';
 
 export interface PIPMediaProps {
   src: string;
@@ -49,8 +45,9 @@ export const pictureInPictureReducer: Reducer<PIPState> = (
       ...action.payload.props,
     };
   else if (removePictureInPicture.match(action)) return initialState;
-  else if (action.type === TIMELINE_DELETE)
-    if (state.type && state.statusId === action.id) return initialState;
+  else if (timelineDelete.match(action))
+    if (state.type && state.statusId === action.payload.statusId)
+      return initialState;
 
   return state;
 };

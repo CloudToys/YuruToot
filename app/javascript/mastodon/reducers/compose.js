@@ -1,60 +1,61 @@
-import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+import {fromJS, List as ImmutableList, Map as ImmutableMap, OrderedSet as ImmutableOrderedSet} from 'immutable';
+
+import {timelineDelete} from 'mastodon/actions/timelines_typed';
 
 import {
-  COMPOSE_MOUNT,
-  COMPOSE_UNMOUNT,
   COMPOSE_CHANGE,
-  COMPOSE_REPLY,
-  COMPOSE_REPLY_CANCEL,
-  COMPOSE_DIRECT,
-  COMPOSE_MENTION,
-  COMPOSE_SUBMIT_REQUEST,
-  COMPOSE_SUBMIT_SUCCESS,
-  COMPOSE_SUBMIT_FAIL,
-  COMPOSE_UPLOAD_REQUEST,
-  COMPOSE_UPLOAD_SUCCESS,
-  COMPOSE_UPLOAD_FAIL,
-  COMPOSE_UPLOAD_UNDO,
-  COMPOSE_UPLOAD_PROGRESS,
-  COMPOSE_UPLOAD_PROCESSING,
-  THUMBNAIL_UPLOAD_REQUEST,
-  THUMBNAIL_UPLOAD_SUCCESS,
-  THUMBNAIL_UPLOAD_FAIL,
-  THUMBNAIL_UPLOAD_PROGRESS,
-  COMPOSE_SUGGESTIONS_CLEAR,
-  COMPOSE_SUGGESTIONS_READY,
-  COMPOSE_SUGGESTION_SELECT,
-  COMPOSE_SUGGESTION_IGNORE,
-  COMPOSE_SUGGESTION_TAGS_UPDATE,
-  COMPOSE_TAG_HISTORY_UPDATE,
-  COMPOSE_SENSITIVITY_CHANGE,
-  COMPOSE_SPOILERNESS_CHANGE,
-  COMPOSE_SPOILER_TEXT_CHANGE,
-  COMPOSE_VISIBILITY_CHANGE,
-  COMPOSE_LANGUAGE_CHANGE,
-  COMPOSE_COMPOSING_CHANGE,
-  COMPOSE_EMOJI_INSERT,
-  COMPOSE_UPLOAD_CHANGE_REQUEST,
-  COMPOSE_UPLOAD_CHANGE_SUCCESS,
-  COMPOSE_UPLOAD_CHANGE_FAIL,
-  COMPOSE_RESET,
-  COMPOSE_POLL_ADD,
-  COMPOSE_POLL_REMOVE,
-  COMPOSE_POLL_OPTION_CHANGE,
-  COMPOSE_POLL_SETTINGS_CHANGE,
-  INIT_MEDIA_EDIT_MODAL,
   COMPOSE_CHANGE_MEDIA_DESCRIPTION,
   COMPOSE_CHANGE_MEDIA_FOCUS,
   COMPOSE_CHANGE_MEDIA_ORDER,
-  COMPOSE_SET_STATUS,
+  COMPOSE_COMPOSING_CHANGE,
+  COMPOSE_DIRECT,
+  COMPOSE_EMOJI_INSERT,
   COMPOSE_FOCUS,
+  COMPOSE_LANGUAGE_CHANGE,
+  COMPOSE_MENTION,
+  COMPOSE_MOUNT,
+  COMPOSE_POLL_ADD,
+  COMPOSE_POLL_OPTION_CHANGE,
+  COMPOSE_POLL_REMOVE,
+  COMPOSE_POLL_SETTINGS_CHANGE,
+  COMPOSE_REPLY,
+  COMPOSE_REPLY_CANCEL,
+  COMPOSE_RESET,
+  COMPOSE_SENSITIVITY_CHANGE,
+  COMPOSE_SET_STATUS,
+  COMPOSE_SPOILER_TEXT_CHANGE,
+  COMPOSE_SPOILERNESS_CHANGE,
+  COMPOSE_SUBMIT_FAIL,
+  COMPOSE_SUBMIT_REQUEST,
+  COMPOSE_SUBMIT_SUCCESS,
+  COMPOSE_SUGGESTION_IGNORE,
+  COMPOSE_SUGGESTION_SELECT,
+  COMPOSE_SUGGESTION_TAGS_UPDATE,
+  COMPOSE_SUGGESTIONS_CLEAR,
+  COMPOSE_SUGGESTIONS_READY,
+  COMPOSE_TAG_HISTORY_UPDATE,
+  COMPOSE_UNMOUNT,
+  COMPOSE_UPLOAD_CHANGE_FAIL,
+  COMPOSE_UPLOAD_CHANGE_REQUEST,
+  COMPOSE_UPLOAD_CHANGE_SUCCESS,
+  COMPOSE_UPLOAD_FAIL,
+  COMPOSE_UPLOAD_PROCESSING,
+  COMPOSE_UPLOAD_PROGRESS,
+  COMPOSE_UPLOAD_REQUEST,
+  COMPOSE_UPLOAD_SUCCESS,
+  COMPOSE_UPLOAD_UNDO,
+  COMPOSE_VISIBILITY_CHANGE,
+  INIT_MEDIA_EDIT_MODAL,
+  THUMBNAIL_UPLOAD_FAIL,
+  THUMBNAIL_UPLOAD_PROGRESS,
+  THUMBNAIL_UPLOAD_REQUEST,
+  THUMBNAIL_UPLOAD_SUCCESS,
 } from '../actions/compose';
-import { REDRAFT } from '../actions/statuses';
-import { STORE_HYDRATE } from '../actions/store';
-import { TIMELINE_DELETE } from '../actions/timelines';
-import { me } from '../initial_state';
-import { unescapeHTML } from '../utils/html';
-import { uuid } from '../uuid';
+import {REDRAFT} from '../actions/statuses';
+import {STORE_HYDRATE} from '../actions/store';
+import {me} from '../initial_state';
+import {unescapeHTML} from '../utils/html';
+import {uuid} from '../uuid';
 
 const initialState = ImmutableMap({
   mounted: 0,
@@ -446,10 +447,10 @@ export default function compose(state = initialState, action) {
     return updateSuggestionTags(state, action.token);
   case COMPOSE_TAG_HISTORY_UPDATE:
     return state.set('tagHistory', fromJS(action.tags));
-  case TIMELINE_DELETE:
-    if (action.id === state.get('in_reply_to')) {
+  case timelineDelete.type:
+    if (action.payload.statusId === state.get('in_reply_to')) {
       return state.set('in_reply_to', null);
-    } else if (action.id === state.get('id')) {
+    } else if (action.payload.statusId === state.get('id')) {
       return state.set('id', null);
     } else {
       return state;

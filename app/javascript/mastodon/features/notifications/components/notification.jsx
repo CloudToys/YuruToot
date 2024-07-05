@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 
-import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
+import {defineMessages, FormattedMessage, injectIntl} from 'react-intl';
 
 import classNames from 'classnames';
-import { Link, withRouter } from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import { HotKeys } from 'react-hotkeys';
+import {HotKeys} from 'react-hotkeys';
 
 import EditIcon from '@/material-icons/400-24px/edit.svg?react';
 import FlagIcon from '@/material-icons/400-24px/flag-fill.svg?react';
@@ -18,16 +18,16 @@ import PersonIcon from '@/material-icons/400-24px/person-fill.svg?react';
 import PersonAddIcon from '@/material-icons/400-24px/person_add-fill.svg?react';
 import RepeatIcon from '@/material-icons/400-24px/repeat.svg?react';
 import StarIcon from '@/material-icons/400-24px/star-fill.svg?react';
-import { Icon }  from 'mastodon/components/icon';
+import {Icon} from 'mastodon/components/icon';
 import AccountContainer from 'mastodon/containers/account_container';
 import StatusContainer from 'mastodon/containers/status_container';
-import { me } from 'mastodon/initial_state';
-import { WithRouterPropTypes } from 'mastodon/utils/react_router';
+import {me} from 'mastodon/initial_state';
+import {WithRouterPropTypes} from 'mastodon/utils/react_router';
 
 import FollowRequestContainer from '../containers/follow_request_container';
 
-import { ModerationWarning } from './moderation_warning';
-import { RelationshipsSeveranceEvent } from './relationships_severance_event';
+import {ModerationWarning} from './moderation_warning';
+import {RelationshipsSeveranceEvent} from './relationships_severance_event';
 import Report from './report';
 
 const messages = defineMessages({
@@ -468,7 +468,7 @@ class Notification extends ImmutablePureComponent {
 
     const targetAccount = report.get('target_account');
     const targetDisplayNameHtml = { __html: targetAccount.get('display_name_html') };
-    const targetLink = <bdi><Link className='notification__display-name' title={targetAccount.get('acct')} to={`/@${targetAccount.get('acct')}`} dangerouslySetInnerHTML={targetDisplayNameHtml} /></bdi>;
+    const targetLink = <bdi><Link className='notification__display-name' data-hover-card-account={targetAccount.get('id')} to={`/@${targetAccount.get('acct')}`} dangerouslySetInnerHTML={targetDisplayNameHtml} /></bdi>;
 
     return (
       <HotKeys handlers={this.getHandlers()}>
@@ -491,7 +491,7 @@ class Notification extends ImmutablePureComponent {
     const { notification } = this.props;
     const account          = notification.get('account');
     const displayNameHtml  = { __html: account.get('display_name_html') };
-    const link             = <bdi><Link className='notification__display-name' href={`/@${account.get('acct')}`} title={account.get('acct')} to={`/@${account.get('acct')}`} dangerouslySetInnerHTML={displayNameHtml} /></bdi>;
+    const link             = <bdi><Link className='notification__display-name' href={`/@${account.get('acct')}`} data-hover-card-account={account.get('id')} to={`/@${account.get('acct')}`} dangerouslySetInnerHTML={displayNameHtml} /></bdi>;
 
     switch(notification.get('type')) {
     case 'follow':

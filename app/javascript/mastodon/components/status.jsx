@@ -1,39 +1,39 @@
 import PropTypes from 'prop-types';
 
-import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
+import {defineMessages, FormattedMessage, injectIntl} from 'react-intl';
 
 import classNames from 'classnames';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import { HotKeys } from 'react-hotkeys';
+import {HotKeys} from 'react-hotkeys';
 
 import AlternateEmailIcon from '@/material-icons/400-24px/alternate_email.svg?react';
 import PushPinIcon from '@/material-icons/400-24px/push_pin.svg?react';
 import RepeatIcon from '@/material-icons/400-24px/repeat.svg?react';
 import ReplyIcon from '@/material-icons/400-24px/reply.svg?react';
-import { Icon }  from 'mastodon/components/icon';
+import {Icon} from 'mastodon/components/icon';
 import PictureInPicturePlaceholder from 'mastodon/components/picture_in_picture_placeholder';
-import { withOptionalRouter, WithOptionalRouterPropTypes } from 'mastodon/utils/react_router';
+import {withOptionalRouter, WithOptionalRouterPropTypes} from 'mastodon/utils/react_router';
 
 import Card from '../features/status/components/card';
 // We use the component (and not the container) since we do not want
 // to use the progress bar to show download progress
 import Bundle from '../features/ui/components/bundle';
-import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
-import { SensitiveMediaContext } from '../features/ui/util/sensitive_media_context';
-import { displayMedia, visibleReactions } from '../initial_state';
+import {Audio, MediaGallery, Video} from '../features/ui/util/async-components';
+import {SensitiveMediaContext} from '../features/ui/util/sensitive_media_context';
+import {displayMedia, visibleReactions} from '../initial_state';
 
-import { Avatar } from './avatar';
-import { AvatarOverlay } from './avatar_overlay';
-import { DisplayName } from './display_name';
-import { getHashtagBarForStatus } from './hashtag_bar';
-import { RelativeTimestamp } from './relative_timestamp';
+import {Avatar} from './avatar';
+import {AvatarOverlay} from './avatar_overlay';
+import {DisplayName} from './display_name';
+import {getHashtagBarForStatus} from './hashtag_bar';
+import {RelativeTimestamp} from './relative_timestamp';
 import StatusActionBar from './status_action_bar';
 import StatusContent from './status_content';
 import StatusReactions from './status_reactions';
-import { VisibilityIcon } from './visibility_icon';
+import {VisibilityIcon} from './visibility_icon';
 
 const domParser = new DOMParser();
 
@@ -429,7 +429,7 @@ class Status extends ImmutablePureComponent {
       prepend = (
         <div className='status__prepend'>
           <div className='status__prepend-icon-wrapper'><Icon id='retweet' icon={RepeatIcon} className='status__prepend-icon' /></div>
-          <FormattedMessage id='status.reblogged_by' defaultMessage='{name} boosted' values={{ name: <a onClick={this.handlePrependAccountClick} data-id={status.getIn(['account', 'id'])} href={`/@${status.getIn(['account', 'acct'])}`} className='status__display-name muted'><bdi><strong dangerouslySetInnerHTML={display_name_html} /></bdi></a> }} />
+          <FormattedMessage id='status.reblogged_by' defaultMessage='{name} boosted' values={{ name: <a onClick={this.handlePrependAccountClick} data-id={status.getIn(['account', 'id'])} data-hover-card-account={status.getIn(['account', 'id'])} href={`/@${status.getIn(['account', 'acct'])}`} className='status__display-name muted'><bdi><strong dangerouslySetInnerHTML={display_name_html} /></bdi></a> }} />
         </div>
       );
 
@@ -450,7 +450,7 @@ class Status extends ImmutablePureComponent {
       prepend = (
         <div className='status__prepend'>
           <div className='status__prepend-icon-wrapper'><Icon id='reply' icon={ReplyIcon} className='status__prepend-icon' /></div>
-          <FormattedMessage id='status.replied_to' defaultMessage='Replied to {name}' values={{ name: <a onClick={this.handlePrependAccountClick} data-id={status.getIn(['account', 'id'])} href={`/@${status.getIn(['account', 'acct'])}`} className='status__display-name muted'><bdi><strong dangerouslySetInnerHTML={display_name_html} /></bdi></a> }} />
+          <FormattedMessage id='status.replied_to' defaultMessage='Replied to {name}' values={{ name: <a onClick={this.handlePrependAccountClick} data-id={status.getIn(['account', 'id'])} data-hover-card-account={status.getIn(['account', 'id'])} href={`/@${status.getIn(['account', 'acct'])}`} className='status__display-name muted'><bdi><strong dangerouslySetInnerHTML={display_name_html} /></bdi></a> }} />
         </div>
       );
     }
@@ -566,7 +566,7 @@ class Status extends ImmutablePureComponent {
                 <RelativeTimestamp timestamp={status.get('created_at')} />{status.get('edited_at') && <abbr title={intl.formatMessage(messages.edited, { date: intl.formatDate(status.get('edited_at'), { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }) })}> *</abbr>}
               </a>
 
-              <a onClick={this.handleAccountClick} href={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='status__display-name' target='_blank' rel='noopener noreferrer'>
+              <a onClick={this.handleAccountClick} href={`/@${status.getIn(['account', 'acct'])}`} data-hover-card-account={status.getIn(['account', 'id'])} className='status__display-name' target='_blank' rel='noopener noreferrer'>
                 <div className='status__avatar'>
                   {statusAvatar}
                 </div>

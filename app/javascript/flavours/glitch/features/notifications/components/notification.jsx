@@ -1,29 +1,29 @@
 import PropTypes from 'prop-types';
 
-import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
+import {defineMessages, FormattedMessage, injectIntl} from 'react-intl';
 
 import classNames from 'classnames';
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import { HotKeys } from 'react-hotkeys';
+import {HotKeys} from 'react-hotkeys';
 
 import FlagIcon from '@/material-icons/400-24px/flag-fill.svg?react';
 import PersonIcon from '@/material-icons/400-24px/person-fill.svg?react';
 import PersonAddIcon from '@/material-icons/400-24px/person_add-fill.svg?react';
-import { Icon }  from 'flavours/glitch/components/icon';
-import { Permalink } from 'flavours/glitch/components/permalink';
+import {Icon} from 'flavours/glitch/components/icon';
+import {Permalink} from 'flavours/glitch/components/permalink';
 import AccountContainer from 'flavours/glitch/containers/account_container';
 import StatusContainer from 'flavours/glitch/containers/status_container';
-import { WithRouterPropTypes } from 'flavours/glitch/utils/react_router';
+import {WithRouterPropTypes} from 'flavours/glitch/utils/react_router';
 
 import FollowRequestContainer from '../containers/follow_request_container';
 import NotificationOverlayContainer from '../containers/overlay_container';
 
-import { ModerationWarning } from './moderation_warning';
-import { RelationshipsSeveranceEvent } from './relationships_severance_event';
+import {ModerationWarning} from './moderation_warning';
+import {RelationshipsSeveranceEvent} from './relationships_severance_event';
 import Report from './report';
 
 const messages = defineMessages({
@@ -414,6 +414,7 @@ class Notification extends ImmutablePureComponent {
           title={targetAccount.get('acct')}
           to={`/@${targetAccount.get('acct')}`}
           dangerouslySetInnerHTML={targetDisplayNameHtml}
+          data-hover-card-account={targetAccount.get('id')}
         />
       </bdi>
     );
@@ -448,6 +449,7 @@ class Notification extends ImmutablePureComponent {
           title={account.get('acct')}
           to={`/@${account.get('acct')}`}
           dangerouslySetInnerHTML={displayNameHtml}
+          data-hover-card-account={account.get('id')}
         />
       </bdi>
     );

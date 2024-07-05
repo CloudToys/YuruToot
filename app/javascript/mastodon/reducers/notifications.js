@@ -1,6 +1,7 @@
-import { fromJS, Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import {fromJS, List as ImmutableList, Map as ImmutableMap} from 'immutable';
 
-import { blockDomainSuccess } from 'mastodon/actions/domain_blocks';
+import {blockDomainSuccess} from 'mastodon/actions/domain_blocks';
+import {timelineDelete} from 'mastodon/actions/timelines_typed';
 
 import {
   authorizeFollowRequestSuccess,
@@ -8,30 +9,25 @@ import {
   muteAccountSuccess,
   rejectFollowRequestSuccess,
 } from '../actions/accounts';
+import {focusApp, unfocusApp,} from '../actions/app';
+import {fetchMarkers,} from '../actions/markers';
 import {
-  focusApp,
-  unfocusApp,
-} from '../actions/app';
-import {
-  fetchMarkers,
-} from '../actions/markers';
-import {
-  notificationsUpdate,
-  NOTIFICATIONS_EXPAND_SUCCESS,
-  NOTIFICATIONS_EXPAND_REQUEST,
-  NOTIFICATIONS_EXPAND_FAIL,
-  NOTIFICATIONS_FILTER_SET,
   NOTIFICATIONS_CLEAR,
-  NOTIFICATIONS_SCROLL_TOP,
+  NOTIFICATIONS_EXPAND_FAIL,
+  NOTIFICATIONS_EXPAND_REQUEST,
+  NOTIFICATIONS_EXPAND_SUCCESS,
+  NOTIFICATIONS_FILTER_SET,
   NOTIFICATIONS_LOAD_PENDING,
-  NOTIFICATIONS_MOUNT,
-  NOTIFICATIONS_UNMOUNT,
   NOTIFICATIONS_MARK_AS_READ,
-  NOTIFICATIONS_SET_BROWSER_SUPPORT,
+  NOTIFICATIONS_MOUNT,
+  NOTIFICATIONS_SCROLL_TOP,
   NOTIFICATIONS_SET_BROWSER_PERMISSION,
+  NOTIFICATIONS_SET_BROWSER_SUPPORT,
+  NOTIFICATIONS_UNMOUNT,
+  notificationsUpdate,
 } from '../actions/notifications';
-import { TIMELINE_DELETE, TIMELINE_DISCONNECT } from '../actions/timelines';
-import { compareId } from '../compare_id';
+import {disconnectTimeline} from '../actions/timelines';
+import {compareId} from '../compare_id';
 
 const initialState = ImmutableMap({
   pendingItems: ImmutableList(),
@@ -291,11 +287,11 @@ export default function notifications(state = initialState, action) {
     return filterNotifications(state, [action.payload.id], 'follow_request');
   case NOTIFICATIONS_CLEAR:
     return state.set('items', ImmutableList()).set('pendingItems', ImmutableList()).set('hasMore', false);
-  case TIMELINE_DELETE:
-    return deleteByStatus(state, action.id);
-  case TIMELINE_DISCONNECT:
-    return action.timeline === 'home' ?
-      state.update(action.usePendingItems ? 'pendingItems' : 'items', items => items.first() ? items.unshift(null) : items) :
+  case timelineDelete.type:
+    return deleteByStatus(state, action.payload.statusId);
+  case disconnectTimeline.type:
+    return action.payload.timeline === 'home' ?
+      state.update(action.payload.usePendingItems ? 'pendingItems' : 'items', items => items.first() ? items.unshift(null) : items) :
       state;
   case NOTIFICATIONS_MARK_AS_READ:
     const lastNotification = state.get('items').find(item => item !== null);

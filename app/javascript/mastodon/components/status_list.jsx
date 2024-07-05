@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import { debounce } from 'lodash';
+import {debounce} from 'lodash';
 
-import { TIMELINE_GAP, TIMELINE_SUGGESTIONS } from 'mastodon/actions/timelines';
+import {TIMELINE_GAP, TIMELINE_SUGGESTIONS} from 'mastodon/actions/timelines';
 import RegenerationIndicator from 'mastodon/components/regeneration_indicator';
-import { InlineFollowSuggestions } from 'mastodon/features/home_timeline/components/inline_follow_suggestions';
+import {InlineFollowSuggestions} from 'mastodon/features/home_timeline/components/inline_follow_suggestions';
 
 import StatusContainer from '../containers/status_container';
 
-import { LoadGap } from './load_gap';
+import {LoadGap} from './load_gap';
 import ScrollableList from './scrollable_list';
 
 export default class StatusList extends ImmutablePureComponent {
@@ -33,6 +33,7 @@ export default class StatusList extends ImmutablePureComponent {
     withCounters: PropTypes.bool,
     timelineId: PropTypes.string,
     lastId: PropTypes.string,
+    bindToDocument: PropTypes.bool,
   };
 
   static defaultProps = {

@@ -1,25 +1,25 @@
 import PropTypes from 'prop-types';
 
-import { FormattedDate, FormattedMessage } from 'react-intl';
+import {FormattedDate, FormattedMessage} from 'react-intl';
 
 import classNames from 'classnames';
-import { Link, withRouter } from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import { AnimatedNumber } from 'flavours/glitch/components/animated_number';
+import {AnimatedNumber} from 'flavours/glitch/components/animated_number';
 import AttachmentList from 'flavours/glitch/components/attachment_list';
 import EditedTimestamp from 'flavours/glitch/components/edited_timestamp';
-import { getHashtagBarForStatus } from 'flavours/glitch/components/hashtag_bar';
+import {getHashtagBarForStatus} from 'flavours/glitch/components/hashtag_bar';
 import PictureInPicturePlaceholder from 'flavours/glitch/components/picture_in_picture_placeholder';
-import { VisibilityIcon } from 'flavours/glitch/components/visibility_icon';
+import {VisibilityIcon} from 'flavours/glitch/components/visibility_icon';
 import PollContainer from 'flavours/glitch/containers/poll_container';
-import { identityContextPropShape, withIdentity } from 'flavours/glitch/identity_context';
-import { WithRouterPropTypes } from 'flavours/glitch/utils/react_router';
+import {identityContextPropShape, withIdentity} from 'flavours/glitch/identity_context';
+import {WithRouterPropTypes} from 'flavours/glitch/utils/react_router';
 
-import { Avatar } from '../../../components/avatar';
-import { DisplayName } from '../../../components/display_name';
+import {Avatar} from '../../../components/avatar';
+import {DisplayName} from '../../../components/display_name';
 import MediaGallery from '../../../components/media_gallery';
 import StatusContent from '../../../components/status_content';
 import StatusReactions from '../../../components/status_reactions';
@@ -289,7 +289,7 @@ class DetailedStatus extends ImmutablePureComponent {
     return (
       <div style={outerStyle}>
         <div ref={this.setRef} className={classNames('detailed-status', `detailed-status-${status.get('visibility')}`, { compact })} data-status-by={status.getIn(['account', 'acct'])}>
-          <a href={status.getIn(['account', 'url'])} onClick={this.handleAccountClick} className='detailed-status__display-name'>
+          <a href={status.getIn(['account', 'url'])} data-hover-card-account={status.getIn(['account', 'id'])} onClick={this.handleAccountClick} className='detailed-status__display-name'>
             <div className='detailed-status__display-avatar'><Avatar account={status.get('account')} size={48} /></div>
             <DisplayName account={status.get('account')} localDomain={this.props.domain} />
           </a>

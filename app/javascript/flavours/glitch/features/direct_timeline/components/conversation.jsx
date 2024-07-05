@@ -1,33 +1,33 @@
 import PropTypes from 'prop-types';
-import { useCallback, useState } from 'react';
+import {useCallback, useState} from 'react';
 
-import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
+import {defineMessages, FormattedMessage, useIntl} from 'react-intl';
 
 import classNames from 'classnames';
-import { useHistory } from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 
-import { createSelector } from '@reduxjs/toolkit';
+import {createSelector} from '@reduxjs/toolkit';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 
-import { HotKeys } from 'react-hotkeys';
+import {HotKeys} from 'react-hotkeys';
 
 import MoreHorizIcon from '@/material-icons/400-24px/more_horiz.svg?react';
 import ReplyIcon from '@/material-icons/400-24px/reply.svg?react';
-import { replyCompose } from 'flavours/glitch/actions/compose';
-import { markConversationRead, deleteConversation } from 'flavours/glitch/actions/conversations';
-import { openModal } from 'flavours/glitch/actions/modal';
-import { muteStatus, unmuteStatus, revealStatus, hideStatus } from 'flavours/glitch/actions/statuses';
+import {replyCompose} from 'flavours/glitch/actions/compose';
+import {deleteConversation, markConversationRead} from 'flavours/glitch/actions/conversations';
+import {openModal} from 'flavours/glitch/actions/modal';
+import {hideStatus, muteStatus, revealStatus, unmuteStatus} from 'flavours/glitch/actions/statuses';
 import AttachmentList from 'flavours/glitch/components/attachment_list';
 import AvatarComposite from 'flavours/glitch/components/avatar_composite';
-import { IconButton } from 'flavours/glitch/components/icon_button';
-import { Permalink } from 'flavours/glitch/components/permalink';
-import { RelativeTimestamp } from 'flavours/glitch/components/relative_timestamp';
+import {IconButton} from 'flavours/glitch/components/icon_button';
+import {Permalink} from 'flavours/glitch/components/permalink';
+import {RelativeTimestamp} from 'flavours/glitch/components/relative_timestamp';
 import StatusContent from 'flavours/glitch/components/status_content';
 import DropdownMenuContainer from 'flavours/glitch/containers/dropdown_menu_container';
-import { autoPlayGif } from 'flavours/glitch/initial_state';
-import { makeGetStatus } from 'flavours/glitch/selectors';
+import {autoPlayGif} from 'flavours/glitch/initial_state';
+import {makeGetStatus} from 'flavours/glitch/selectors';
 
 const messages = defineMessages({
   more: { id: 'status.more', defaultMessage: 'More' },
@@ -185,7 +185,7 @@ export const Conversation = ({ conversation, scrollKey, onMoveUp, onMoveDown }) 
   menu.push({ text: intl.formatMessage(messages.delete), action: handleDelete });
 
   const names = accounts.map(a => (
-    <Permalink to={`/@${a.get('acct')}`} href={a.get('url')} key={a.get('id')} title={a.get('acct')}>
+    <Permalink to={`/@${a.get('acct')}`} href={a.get('url')} key={a.get('id')} data-hover-card-account={a.get('id')}>
       <bdi>
         <strong
           className='display-name__html'

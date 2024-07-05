@@ -1,26 +1,21 @@
-import { IntlMessageFormat } from 'intl-messageformat';
-import { defineMessages } from 'react-intl';
+import {IntlMessageFormat} from 'intl-messageformat';
+import {defineMessages} from 'react-intl';
 
-import { List as ImmutableList } from 'immutable';
+import {List as ImmutableList} from 'immutable';
 
-import { compareId } from 'mastodon/compare_id';
-import { usePendingItems as preferPendingItems } from 'mastodon/initial_state';
+import {compareId} from 'mastodon/compare_id';
+import {usePendingItems as preferPendingItems} from 'mastodon/initial_state';
 
-import api, { getLinks } from '../api';
-import { unescapeHTML } from '../utils/html';
-import { requestNotificationPermission } from '../utils/notifications';
+import api, {getLinks} from '../api';
+import {unescapeHTML} from '../utils/html';
+import {requestNotificationPermission} from '../utils/notifications';
 
-import { fetchFollowRequests, fetchRelationships } from './accounts';
-import {
-  importFetchedAccount,
-  importFetchedAccounts,
-  importFetchedStatus,
-  importFetchedStatuses,
-} from './importer';
-import { submitMarkers } from './markers';
-import { notificationsUpdate } from "./notifications_typed";
-import { register as registerPushNotifications } from './push_notifications';
-import { saveSettings } from './settings';
+import {fetchFollowRequests, fetchRelationships} from './accounts';
+import {importFetchedAccount, importFetchedAccounts, importFetchedStatus, importFetchedStatuses,} from './importer';
+import {submitMarkers} from './markers';
+import {notificationsUpdate} from "./notifications_typed";
+import {register as registerPushNotifications} from './push_notifications';
+import {saveSettings} from './settings';
 
 export * from "./notifications_typed";
 
@@ -43,10 +38,6 @@ export const NOTIFICATIONS_MARK_AS_READ = 'NOTIFICATIONS_MARK_AS_READ';
 
 export const NOTIFICATIONS_SET_BROWSER_SUPPORT    = 'NOTIFICATIONS_SET_BROWSER_SUPPORT';
 export const NOTIFICATIONS_SET_BROWSER_PERMISSION = 'NOTIFICATIONS_SET_BROWSER_PERMISSION';
-
-export const NOTIFICATION_POLICY_FETCH_REQUEST = 'NOTIFICATION_POLICY_FETCH_REQUEST';
-export const NOTIFICATION_POLICY_FETCH_SUCCESS = 'NOTIFICATION_POLICY_FETCH_SUCCESS';
-export const NOTIFICATION_POLICY_FETCH_FAIL    = 'NOTIFICATION_POLICY_FETCH_FAIL';
 
 export const NOTIFICATION_REQUESTS_FETCH_REQUEST = 'NOTIFICATION_REQUESTS_FETCH_REQUEST';
 export const NOTIFICATION_REQUESTS_FETCH_SUCCESS = 'NOTIFICATION_REQUESTS_FETCH_SUCCESS';
@@ -346,40 +337,6 @@ export function setBrowserPermission (value) {
     value,
   };
 }
-
-export const fetchNotificationPolicy = () => (dispatch) => {
-  dispatch(fetchNotificationPolicyRequest());
-
-  api().get('/api/v1/notifications/policy').then(({ data }) => {
-    dispatch(fetchNotificationPolicySuccess(data));
-  }).catch(err => {
-    dispatch(fetchNotificationPolicyFail(err));
-  });
-};
-
-export const fetchNotificationPolicyRequest = () => ({
-  type: NOTIFICATION_POLICY_FETCH_REQUEST,
-});
-
-export const fetchNotificationPolicySuccess = policy => ({
-  type: NOTIFICATION_POLICY_FETCH_SUCCESS,
-  policy,
-});
-
-export const fetchNotificationPolicyFail = error => ({
-  type: NOTIFICATION_POLICY_FETCH_FAIL,
-  error,
-});
-
-export const updateNotificationsPolicy = params => (dispatch) => {
-  dispatch(fetchNotificationPolicyRequest());
-
-  api().put('/api/v1/notifications/policy', params).then(({ data }) => {
-    dispatch(fetchNotificationPolicySuccess(data));
-  }).catch(err => {
-    dispatch(fetchNotificationPolicyFail(err));
-  });
-};
 
 export const fetchNotificationRequests = () => (dispatch, getState) => {
   const params = {};

@@ -1,31 +1,27 @@
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import {defineMessages, FormattedMessage, injectIntl} from 'react-intl';
 
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
-import { openURL } from 'mastodon/actions/search';
+import {openURL} from 'mastodon/actions/search';
 
 import {
   followAccount,
-  unfollowAccount,
-  unblockAccount,
-  unmuteAccount,
   pinAccount,
+  unblockAccount,
+  unfollowAccount,
+  unmuteAccount,
   unpinAccount,
 } from '../../../actions/accounts';
-import { initBlockModal } from '../../../actions/blocks';
-import {
-  mentionCompose,
-  directCompose,
-} from '../../../actions/compose';
-import { initDomainBlockModal, unblockDomain } from '../../../actions/domain_blocks';
-import { openModal } from '../../../actions/modal';
-import { initMuteModal } from '../../../actions/mutes';
-import { initReport } from '../../../actions/reports';
-import { makeGetAccount, getAccountHidden } from '../../../selectors';
+import {initBlockModal} from '../../../actions/blocks';
+import {directCompose, mentionCompose,} from '../../../actions/compose';
+import {initDomainBlockModal, unblockDomain} from '../../../actions/domain_blocks';
+import {openModal} from '../../../actions/modal';
+import {initMuteModal} from '../../../actions/mutes';
+import {initReport} from '../../../actions/reports';
+import {getAccountHidden, makeGetAccount} from '../../../selectors';
 import Header from '../components/header';
 
 const messages = defineMessages({
-  cancelFollowRequestConfirm: { id: 'confirmations.cancel_follow_request.confirm', defaultMessage: 'Withdraw request' },
   unfollowConfirm: { id: 'confirmations.unfollow.confirm', defaultMessage: 'Unfollow' },
   blockDomainConfirm: { id: 'confirmations.domain_block.confirm', defaultMessage: 'Block entire domain' },
 });
@@ -45,21 +41,12 @@ const makeMapStateToProps = () => {
 const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onFollow (account) {
-    if (account.getIn(['relationship', 'following'])) {
+    if (account.getIn(['relationship', 'following']) || account.getIn(['relationship', 'requested'])) {
       dispatch(openModal({
         modalType: 'CONFIRM',
         modalProps: {
           message: <FormattedMessage id='confirmations.unfollow.message' defaultMessage='Are you sure you want to unfollow {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
           confirm: intl.formatMessage(messages.unfollowConfirm),
-          onConfirm: () => dispatch(unfollowAccount(account.get('id'))),
-        },
-      }));
-    } else if (account.getIn(['relationship', 'requested'])) {
-      dispatch(openModal({
-        modalType: 'CONFIRM',
-        modalProps: {
-          message: <FormattedMessage id='confirmations.cancel_follow_request.message' defaultMessage='Are you sure you want to withdraw your request to follow {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
-          confirm: intl.formatMessage(messages.cancelFollowRequestConfirm),
           onConfirm: () => dispatch(unfollowAccount(account.get('id'))),
         },
       }));

@@ -1,12 +1,10 @@
 //  Package imports  //
 import PropTypes from 'prop-types';
-import { PureComponent } from 'react';
+import {PureComponent} from 'react';
 
-import { FormattedMessage } from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
-
-import AddReactionIcon from '@/material-icons/400-24px/add_reaction.svg?react';
 import EditIcon from '@/material-icons/400-24px/edit.svg?react';
 import HomeIcon from '@/material-icons/400-24px/home-fill.svg?react';
 import InsertChartIcon from '@/material-icons/400-24px/insert_chart.svg?react';
@@ -14,8 +12,8 @@ import MoodIcon from '@/material-icons/400-24px/mood.svg?react';
 import PushPinIcon from '@/material-icons/400-24px/push_pin.svg?react';
 import RepeatIcon from '@/material-icons/400-24px/repeat.svg?react';
 import StarIcon from '@/material-icons/400-24px/star-fill.svg?react';
-import { Icon } from 'flavours/glitch/components/icon';
-import { me } from 'flavours/glitch/initial_state';
+import {Icon} from 'flavours/glitch/components/icon';
+import {me} from 'flavours/glitch/initial_state';
 
 
 export default class StatusPrepend extends PureComponent {
@@ -40,6 +38,7 @@ export default class StatusPrepend extends PureComponent {
         onClick={this.handleClick}
         href={account.get('url')}
         className='status__display-name'
+        data-hover-card-account={account.get('id')}
       >
         <bdi>
           <strong

@@ -1,7 +1,7 @@
 import escapeTextContentForBrowser from 'escape-html';
 
 import emojify from '../../features/emoji/emoji';
-import { expandSpoilers } from '../../initial_state';
+import {expandSpoilers} from '../../initial_state';
 
 const domParser = new DOMParser();
 
@@ -34,6 +34,17 @@ export function normalizeStatus(status, normalOldStatus) {
 
   if (status.poll && status.poll.id) {
     normalStatus.poll = status.poll.id;
+  }
+
+  if (status.card) {
+    normalStatus.card = {
+      ...status.card,
+      authors: status.card.authors.map(author => ({
+        ...author,
+        accountId: author.account?.id,
+        account: undefined,
+      })),
+    };
   }
 
   if (status.filtered) {

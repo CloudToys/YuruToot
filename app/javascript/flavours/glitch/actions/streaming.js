@@ -1,27 +1,27 @@
 // @ts-check
 
-import { getLocale } from '../locales';
-import { connectStream } from '../stream';
+import {getLocale} from '../locales';
+import {connectStream} from '../stream';
 
 import {
+  deleteAnnouncement,
   fetchAnnouncements,
   updateAnnouncements,
   updateReaction as updateAnnouncementsReaction,
-  deleteAnnouncement,
 } from './announcements';
-import { updateConversations } from './conversations';
-import { updateNotifications, expandNotifications } from './notifications';
-import { updateStatus } from './statuses';
+import {updateConversations} from './conversations';
+import {expandNotifications, updateNotifications} from './notifications';
+import {updateStatus} from './statuses';
 import {
-  updateTimeline,
-  deleteFromTimelines,
-  expandHomeTimeline,
   connectTimeline,
+  deleteFromTimelines,
   disconnectTimeline,
-  fillHomeTimelineGaps,
-  fillPublicTimelineGaps,
+  expandHomeTimeline,
   fillCommunityTimelineGaps,
+  fillHomeTimelineGaps,
   fillListTimelineGaps,
+  fillPublicTimelineGaps,
+  updateTimeline,
 } from './timelines';
 
 /**
@@ -77,7 +77,7 @@ export const connectTimelineStream = (timelineId, channelName, params = {}, opti
       },
 
       onDisconnect() {
-        dispatch(disconnectTimeline(timelineId));
+        dispatch(disconnectTimeline({ timeline: timelineId }));
 
         if (options.fallback) {
           // @ts-expect-error

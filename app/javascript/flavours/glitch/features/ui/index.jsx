@@ -1,32 +1,33 @@
 import PropTypes from 'prop-types';
-import { PureComponent } from 'react';
+import {PureComponent} from 'react';
 
-import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
+import {defineMessages, FormattedMessage, injectIntl} from 'react-intl';
 
 import classNames from 'classnames';
-import { Redirect, Route, withRouter } from 'react-router-dom';
+import {Redirect, Route, withRouter} from 'react-router-dom';
 
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import Favico from 'favico.js';
-import { debounce } from 'lodash';
-import { HotKeys } from 'react-hotkeys';
+import {debounce} from 'lodash';
+import {HotKeys} from 'react-hotkeys';
 
-import { changeLayout } from 'flavours/glitch/actions/app';
-import { synchronouslySubmitMarkers, submitMarkers, fetchMarkers } from 'flavours/glitch/actions/markers';
-import { INTRODUCTION_VERSION } from 'flavours/glitch/actions/onboarding';
-import { Permalink } from 'flavours/glitch/components/permalink';
-import { PictureInPicture } from 'flavours/glitch/features/picture_in_picture';
-import { identityContextPropShape, withIdentity } from 'flavours/glitch/identity_context';
-import { layoutFromWindow } from 'flavours/glitch/is_mobile';
-import { WithRouterPropTypes } from 'flavours/glitch/utils/react_router';
+import {changeLayout} from 'flavours/glitch/actions/app';
+import {fetchMarkers, submitMarkers, synchronouslySubmitMarkers} from 'flavours/glitch/actions/markers';
+import {INTRODUCTION_VERSION} from 'flavours/glitch/actions/onboarding';
+import {HoverCardController} from 'flavours/glitch/components/hover_card_controller';
+import {Permalink} from 'flavours/glitch/components/permalink';
+import {PictureInPicture} from 'flavours/glitch/features/picture_in_picture';
+import {identityContextPropShape, withIdentity} from 'flavours/glitch/identity_context';
+import {layoutFromWindow} from 'flavours/glitch/is_mobile';
+import {WithRouterPropTypes} from 'flavours/glitch/utils/react_router';
 
-import { uploadCompose, resetCompose, changeComposeSpoilerness } from '../../actions/compose';
-import { clearHeight } from '../../actions/height_cache';
-import { expandNotifications, notificationsSetVisibility } from '../../actions/notifications';
-import { fetchServer, fetchServerTranslationLanguages } from '../../actions/server';
-import { expandHomeTimeline } from '../../actions/timelines';
-import initialState, { me, owner, singleUserMode, trendsEnabled, trendsAsLanding } from '../../initial_state';
+import {changeComposeSpoilerness, resetCompose, uploadCompose} from '../../actions/compose';
+import {clearHeight} from '../../actions/height_cache';
+import {expandNotifications, notificationsSetVisibility} from '../../actions/notifications';
+import {fetchServer, fetchServerTranslationLanguages} from '../../actions/server';
+import {expandHomeTimeline} from '../../actions/timelines';
+import initialState, {me, owner, singleUserMode, trendsAsLanding, trendsEnabled} from '../../initial_state';
 
 import BundleColumnError from './components/bundle_column_error';
 import Header from './components/header';
@@ -36,42 +37,43 @@ import LoadingBarContainer from './containers/loading_bar_container';
 import ModalContainer from './containers/modal_container';
 import NotificationsContainer from './containers/notifications_container';
 import {
-  Compose,
-  Status,
-  GettingStarted,
-  KeyboardShortcuts,
-  Firehose,
-  AccountTimeline,
+  About,
   AccountGallery,
-  HomeTimeline,
+  AccountTimeline,
+  Blocks,
+  BookmarkedStatuses,
+  Compose,
+  Directory,
+  DirectTimeline,
+  DomainBlocks,
+  Explore,
+  FavouritedStatuses,
+  Favourites,
+  Firehose,
+  FollowedTags,
   Followers,
   Following,
-  Reblogs,
-  Favourites,
-  DirectTimeline,
-  HashtagTimeline,
-  Notifications,
-  NotificationRequests,
-  NotificationRequest,
   FollowRequests,
-  FavouritedStatuses,
-  BookmarkedStatuses,
-  FollowedTags,
-  ListTimeline,
-  Blocks,
-  DomainBlocks,
-  Mutes,
-  PinnedStatuses,
-  Lists,
+  GettingStarted,
   GettingStartedMisc,
-  Directory,
-  Explore,
+  HashtagTimeline,
+  HomeTimeline,
+  KeyboardShortcuts,
+  LinkTimeline,
+  Lists,
+  ListTimeline,
+  Mutes,
+  NotificationRequest,
+  NotificationRequests,
+  Notifications,
   Onboarding,
-  About,
+  PinnedStatuses,
   PrivacyPolicy,
+  Reblogs,
+  Status,
 } from './util/async-components';
-import { ColumnsContextProvider } from './util/columns_context';
-import { WrappedSwitch, WrappedRoute } from './util/react_router_helpers';
+import {ColumnsContextProvider} from './util/columns_context';
+import {WrappedRoute, WrappedSwitch} from './util/react_router_helpers';
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
 import '../../components/status';
@@ -210,6 +212,7 @@ class SwitchingColumnsArea extends PureComponent {
             <WrappedRoute path='/public/remote' exact component={Firehose} componentParams={{ feedType: 'public:remote' }} content={children} />
             <WrappedRoute path={['/conversations', '/timelines/direct']} component={DirectTimeline} content={children} />
             <WrappedRoute path='/tags/:id' component={HashtagTimeline} content={children} />
+            <WrappedRoute path='/links/:url' component={LinkTimeline} content={children} />
             <WrappedRoute path='/lists/:id' component={ListTimeline} content={children} />
             <WrappedRoute path='/notifications' component={Notifications} content={children} exact />
             <WrappedRoute path='/notifications/requests' component={NotificationRequests} content={children} exact />
@@ -648,6 +651,7 @@ class UI extends PureComponent {
 
           {layout !== 'mobile' && <PictureInPicture />}
           <NotificationsContainer />
+          <HoverCardController />
           <LoadingBarContainer className='loading-bar' />
           <ModalContainer />
           <UploadArea active={draggingOver} onClose={this.closeUploadModal} />

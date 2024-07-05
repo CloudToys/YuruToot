@@ -1,19 +1,19 @@
 import PropTypes from 'prop-types';
-import { PureComponent } from 'react';
+import {PureComponent} from 'react';
 
-import { injectIntl, defineMessages } from 'react-intl';
+import {defineMessages, injectIntl} from 'react-intl';
 
 import classNames from 'classnames';
 
-import { supportsPassiveEvents } from 'detect-passive-events';
+import {supportsPassiveEvents} from 'detect-passive-events';
 import fuzzysort from 'fuzzysort';
 import Overlay from 'react-overlays/Overlay';
 
 import CancelIcon from '@/material-icons/400-24px/cancel-fill.svg?react';
 import SearchIcon from '@/material-icons/400-24px/search.svg?react';
 import TranslateIcon from '@/material-icons/400-24px/translate.svg?react';
-import { Icon } from 'flavours/glitch/components/icon';
-import { languages as preloadedLanguages } from 'flavours/glitch/initial_state';
+import {Icon} from 'flavours/glitch/components/icon';
+import {languages as preloadedLanguages} from 'flavours/glitch/initial_state';
 
 const messages = defineMessages({
   changeLanguage: { id: 'compose.language.change', defaultMessage: 'Change language' },
@@ -108,18 +108,6 @@ class LanguageDropdownMenu extends PureComponent {
       limit: 5,
       threshold: -10000,
     }).map(result => result.obj);
-  }
-
-  frequentlyUsed () {
-    const { languages, value } = this.props;
-    const current = languages.find(lang => lang[0] === value);
-    const results = [];
-
-    if (current) {
-      results.push(current);
-    }
-
-    return results;
   }
 
   handleClick = e => {

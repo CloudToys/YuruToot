@@ -1,26 +1,26 @@
 import PropTypes from 'prop-types';
-import { PureComponent } from 'react';
+import {PureComponent} from 'react';
 
-import { FormattedMessage, injectIntl } from 'react-intl';
+import {FormattedMessage, injectIntl} from 'react-intl';
 
 import classnames from 'classnames';
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import ImageIcon from '@/material-icons/400-24px/image.svg?react';
 import InsertChartIcon from '@/material-icons/400-24px/insert_chart.svg?react';
 import LinkIcon from '@/material-icons/400-24px/link.svg?react';
 import MovieIcon from '@/material-icons/400-24px/movie.svg?react';
 import MusicNoteIcon from '@/material-icons/400-24px/music_note.svg?react';
-import { Icon } from 'flavours/glitch/components/icon';
-import { identityContextPropShape, withIdentity } from 'flavours/glitch/identity_context';
-import { autoPlayGif, languages as preloadedLanguages } from 'flavours/glitch/initial_state';
-import { decode as decodeIDNA } from 'flavours/glitch/utils/idna';
+import {Icon} from 'flavours/glitch/components/icon';
+import {identityContextPropShape, withIdentity} from 'flavours/glitch/identity_context';
+import {autoPlayGif, languages as preloadedLanguages} from 'flavours/glitch/initial_state';
+import {decode as decodeIDNA} from 'flavours/glitch/utils/idna';
 
 
-import { Permalink } from './permalink';
+import {Permalink} from './permalink';
 
 const textMatchesTarget = (text, origin, host) => {
   return (text === origin || text === host
@@ -181,7 +181,8 @@ class StatusContent extends PureComponent {
 
       if (mention) {
         link.addEventListener('click', this.onMentionClick.bind(this, mention), false);
-        link.setAttribute('title', `@${mention.get('acct')}`);
+        link.removeAttribute('title');
+        link.setAttribute('data-hover-card-account', mention.get('id'));
         if (rewriteMentions !== 'no') {
           while (link.firstChild) link.removeChild(link.firstChild);
           link.appendChild(document.createTextNode('@'));

@@ -1,32 +1,32 @@
 import PropTypes from 'prop-types';
-import { useCallback } from 'react';
+import {useCallback} from 'react';
 
-import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
+import {defineMessages, FormattedMessage, useIntl} from 'react-intl';
 
 import classNames from 'classnames';
-import { Link, useHistory } from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 
-import { createSelector } from '@reduxjs/toolkit';
+import {createSelector} from '@reduxjs/toolkit';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 
-import { HotKeys } from 'react-hotkeys';
+import {HotKeys} from 'react-hotkeys';
 
 import MoreHorizIcon from '@/material-icons/400-24px/more_horiz.svg?react';
 import ReplyIcon from '@/material-icons/400-24px/reply.svg?react';
-import { replyCompose } from 'mastodon/actions/compose';
-import { markConversationRead, deleteConversation } from 'mastodon/actions/conversations';
-import { openModal } from 'mastodon/actions/modal';
-import { muteStatus, unmuteStatus, revealStatus, hideStatus } from 'mastodon/actions/statuses';
+import {replyCompose} from 'mastodon/actions/compose';
+import {deleteConversation, markConversationRead} from 'mastodon/actions/conversations';
+import {openModal} from 'mastodon/actions/modal';
+import {hideStatus, muteStatus, revealStatus, unmuteStatus} from 'mastodon/actions/statuses';
 import AttachmentList from 'mastodon/components/attachment_list';
 import AvatarComposite from 'mastodon/components/avatar_composite';
-import { IconButton } from 'mastodon/components/icon_button';
-import { RelativeTimestamp } from 'mastodon/components/relative_timestamp';
+import {IconButton} from 'mastodon/components/icon_button';
+import {RelativeTimestamp} from 'mastodon/components/relative_timestamp';
 import StatusContent from 'mastodon/components/status_content';
 import DropdownMenuContainer from 'mastodon/containers/dropdown_menu_container';
-import { autoPlayGif } from 'mastodon/initial_state';
-import { makeGetStatus } from 'mastodon/selectors';
+import {autoPlayGif} from 'mastodon/initial_state';
+import {makeGetStatus} from 'mastodon/selectors';
 
 const messages = defineMessages({
   more: { id: 'status.more', defaultMessage: 'More' },
@@ -163,7 +163,7 @@ export const Conversation = ({ conversation, scrollKey, onMoveUp, onMoveDown }) 
   menu.push({ text: intl.formatMessage(messages.delete), action: handleDelete });
 
   const names = accounts.map(a => (
-    <Link to={`/@${a.get('acct')}`} key={a.get('id')} title={a.get('acct')}>
+    <Link to={`/@${a.get('acct')}`} key={a.get('id')} data-hover-card-account={a.get('id')}>
       <bdi>
         <strong
           className='display-name__html'

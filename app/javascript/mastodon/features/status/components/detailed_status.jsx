@@ -1,25 +1,25 @@
 import PropTypes from 'prop-types';
 
-import { FormattedDate, FormattedMessage } from 'react-intl';
+import {FormattedDate, FormattedMessage} from 'react-intl';
 
 import classNames from 'classnames';
-import { Link, withRouter } from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
 import AlternateEmailIcon from '@/material-icons/400-24px/alternate_email.svg?react';
-import { AnimatedNumber } from 'mastodon/components/animated_number';
+import {AnimatedNumber} from 'mastodon/components/animated_number';
 import EditedTimestamp from 'mastodon/components/edited_timestamp';
-import { getHashtagBarForStatus } from 'mastodon/components/hashtag_bar';
-import { Icon }  from 'mastodon/components/icon';
+import {getHashtagBarForStatus} from 'mastodon/components/hashtag_bar';
+import {Icon} from 'mastodon/components/icon';
 import PictureInPicturePlaceholder from 'mastodon/components/picture_in_picture_placeholder';
 import StatusReactions from 'mastodon/components/status_reactions';
-import { VisibilityIcon } from 'mastodon/components/visibility_icon';
-import { WithRouterPropTypes } from 'mastodon/utils/react_router';
+import {VisibilityIcon} from 'mastodon/components/visibility_icon';
+import {WithRouterPropTypes} from 'mastodon/utils/react_router';
 
-import { Avatar } from '../../../components/avatar';
-import { DisplayName } from '../../../components/display_name';
+import {Avatar} from '../../../components/avatar';
+import {DisplayName} from '../../../components/display_name';
 import MediaGallery from '../../../components/media_gallery';
 import StatusContent from '../../../components/status_content';
 import Audio from '../../audio';
@@ -279,7 +279,7 @@ class DetailedStatus extends ImmutablePureComponent {
               <FormattedMessage id='status.direct_indicator' defaultMessage='Private mention' />
             </div>
           )}
-          <a href={`/@${status.getIn(['account', 'acct'])}`} onClick={this.handleAccountClick} className='detailed-status__display-name'>
+          <a href={`/@${status.getIn(['account', 'acct'])}`} data-hover-card-account={status.getIn(['account', 'id'])} onClick={this.handleAccountClick} className='detailed-status__display-name'>
             <div className='detailed-status__display-avatar'><Avatar account={status.get('account')} size={46} /></div>
             <DisplayName account={status.get('account')} localDomain={this.props.domain} />
           </a>

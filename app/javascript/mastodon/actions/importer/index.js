@@ -1,6 +1,6 @@
-import { importAccounts } from '../accounts_typed';
+import {importAccounts} from '../accounts_typed';
 
-import { normalizeStatus, normalizePoll } from './normalizer';
+import {normalizePoll, normalizeStatus} from './normalizer';
 
 export const STATUS_IMPORT   = 'STATUS_IMPORT';
 export const STATUSES_IMPORT = 'STATUSES_IMPORT';
@@ -68,12 +68,16 @@ export function importFetchedStatuses(statuses) {
         status.filtered.forEach(result => pushUnique(filters, result.filter));
       }
 
-      if (status.reblog && status.reblog.id) {
+      if (status.reblog?.id) {
         processStatus(status.reblog);
       }
 
-      if (status.poll && status.poll.id) {
+      if (status.poll?.id) {
         pushUnique(polls, normalizePoll(status.poll, getState().getIn(['polls', status.poll.id])));
+      }
+
+      if (status.card) {
+        status.card.authors.forEach(author => author.account && pushUnique(accounts, author.account));
       }
     }
 

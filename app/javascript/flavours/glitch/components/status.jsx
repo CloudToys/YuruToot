@@ -1,33 +1,32 @@
 import PropTypes from 'prop-types';
 
-import { injectIntl, FormattedMessage } from 'react-intl';
+import {FormattedMessage, injectIntl} from 'react-intl';
 
 import classNames from 'classnames';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import { HotKeys } from 'react-hotkeys';
+import {HotKeys} from 'react-hotkeys';
 
 import PictureInPicturePlaceholder from 'flavours/glitch/components/picture_in_picture_placeholder';
 import PollContainer from 'flavours/glitch/containers/poll_container';
 import NotificationOverlayContainer from 'flavours/glitch/features/notifications/containers/overlay_container';
-import { identityContextPropShape, withIdentity } from 'flavours/glitch/identity_context';
-import { autoUnfoldCW } from 'flavours/glitch/utils/content_warning';
-import { withOptionalRouter, WithOptionalRouterPropTypes } from 'flavours/glitch/utils/react_router';
+import {identityContextPropShape, withIdentity} from 'flavours/glitch/identity_context';
+import {autoUnfoldCW} from 'flavours/glitch/utils/content_warning';
+import {withOptionalRouter, WithOptionalRouterPropTypes} from 'flavours/glitch/utils/react_router';
 
 import Card from '../features/status/components/card';
 // We use the component (and not the container) since we do not want
 // to use the progress bar to show download progress
 import Bundle from '../features/ui/components/bundle';
-import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
-import { IdentityConsumer } from '../features/ui/util/identity_consumer';
-import { SensitiveMediaContext } from '../features/ui/util/sensitive_media_context';
-import { displayMedia, visibleReactions } from '../initial_state';
+import {Audio, MediaGallery, Video} from '../features/ui/util/async-components';
+import {SensitiveMediaContext} from '../features/ui/util/sensitive_media_context';
+import {displayMedia, visibleReactions} from '../initial_state';
 
 import AttachmentList from './attachment_list';
-import { CollapseButton } from './collapse_button';
-import { getHashtagBarForStatus } from './hashtag_bar';
+import {CollapseButton} from './collapse_button';
+import {getHashtagBarForStatus} from './hashtag_bar';
 import StatusActionBar from './status_action_bar';
 import StatusContent from './status_content';
 import StatusHeader from './status_header';
@@ -810,7 +809,7 @@ class Status extends ImmutablePureComponent {
           {prepend}
 
           <div
-            className={classNames('status', `status-${status.get('visibility')}`, { 'status-reply': !!status.get('in_reply_to_id'), 'status--in-thread': !!rootId, 'status--first-in-thread': previousId && (!connectUp || connectToRoot), muted: this.props.muted, 'has-background': isCollapsed && background, collapsed: isCollapsed })}
+            className={classNames('status', `status-${status.get('visibility')}`, { 'status-reply': !!status.get('in_reply_to_id'), 'status--in-thread': !!rootId, 'status--first-in-thread': previousId && (!connectUp || connectToRoot), muted: this.props.muted, 'has-background': isCollapsed && background })}
             data-id={status.get('id')}
             style={isCollapsed && background ? { backgroundImage: `url(${background})` } : null}
           >
