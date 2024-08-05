@@ -1,7 +1,7 @@
-import {fromJS, List as ImmutableList, Map as ImmutableMap} from 'immutable';
+import { fromJS, Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
-import {blockDomainSuccess} from 'mastodon/actions/domain_blocks';
-import {timelineDelete} from 'mastodon/actions/timelines_typed';
+import { blockDomainSuccess } from 'mastodon/actions/domain_blocks';
+import { timelineDelete } from 'mastodon/actions/timelines_typed';
 
 import {
   authorizeFollowRequestSuccess,
@@ -9,25 +9,30 @@ import {
   muteAccountSuccess,
   rejectFollowRequestSuccess,
 } from '../actions/accounts';
-import {focusApp, unfocusApp,} from '../actions/app';
-import {fetchMarkers,} from '../actions/markers';
 import {
-  NOTIFICATIONS_CLEAR,
-  NOTIFICATIONS_EXPAND_FAIL,
-  NOTIFICATIONS_EXPAND_REQUEST,
-  NOTIFICATIONS_EXPAND_SUCCESS,
-  NOTIFICATIONS_FILTER_SET,
-  NOTIFICATIONS_LOAD_PENDING,
-  NOTIFICATIONS_MARK_AS_READ,
-  NOTIFICATIONS_MOUNT,
-  NOTIFICATIONS_SCROLL_TOP,
-  NOTIFICATIONS_SET_BROWSER_PERMISSION,
-  NOTIFICATIONS_SET_BROWSER_SUPPORT,
-  NOTIFICATIONS_UNMOUNT,
+  focusApp,
+  unfocusApp,
+} from '../actions/app';
+import {
+  fetchMarkers,
+} from '../actions/markers';
+import { clearNotifications } from '../actions/notification_groups';
+import {
   notificationsUpdate,
+  NOTIFICATIONS_EXPAND_SUCCESS,
+  NOTIFICATIONS_EXPAND_REQUEST,
+  NOTIFICATIONS_EXPAND_FAIL,
+  NOTIFICATIONS_FILTER_SET,
+  NOTIFICATIONS_SCROLL_TOP,
+  NOTIFICATIONS_LOAD_PENDING,
+  NOTIFICATIONS_MOUNT,
+  NOTIFICATIONS_UNMOUNT,
+  NOTIFICATIONS_MARK_AS_READ,
+  NOTIFICATIONS_SET_BROWSER_SUPPORT,
+  NOTIFICATIONS_SET_BROWSER_PERMISSION,
 } from '../actions/notifications';
-import {disconnectTimeline} from '../actions/timelines';
-import {compareId} from '../compare_id';
+import { disconnectTimeline } from '../actions/timelines';
+import { compareId } from '../compare_id';
 
 const initialState = ImmutableMap({
   pendingItems: ImmutableList(),
@@ -285,7 +290,7 @@ export default function notifications(state = initialState, action) {
   case authorizeFollowRequestSuccess.type:
   case rejectFollowRequestSuccess.type:
     return filterNotifications(state, [action.payload.id], 'follow_request');
-  case NOTIFICATIONS_CLEAR:
+  case clearNotifications.pending.type:
     return state.set('items', ImmutableList()).set('pendingItems', ImmutableList()).set('hasMore', false);
   case timelineDelete.type:
     return deleteByStatus(state, action.payload.statusId);

@@ -1,70 +1,64 @@
 import PropTypes from 'prop-types';
 
-import { defineMessages, injectIntl } from 'react-intl';
+import {defineMessages, injectIntl} from 'react-intl';
 
 import classNames from 'classnames';
-import { Helmet } from 'react-helmet';
-import { withRouter } from 'react-router-dom';
+import {Helmet} from 'react-helmet';
+import {withRouter} from 'react-router-dom';
 
-import { createSelector } from '@reduxjs/toolkit';
+import {createSelector} from '@reduxjs/toolkit';
 import Immutable from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
-import { HotKeys } from 'react-hotkeys';
+import {HotKeys} from 'react-hotkeys';
 
 import ChatIcon from '@/material-icons/400-24px/chat.svg?react';
 import VisibilityIcon from '@/material-icons/400-24px/visibility.svg?react';
 import VisibilityOffIcon from '@/material-icons/400-24px/visibility_off.svg?react';
-import { Icon }  from 'flavours/glitch/components/icon';
-import { LoadingIndicator } from 'flavours/glitch/components/loading_indicator';
+import {Icon} from 'flavours/glitch/components/icon';
+import {LoadingIndicator} from 'flavours/glitch/components/loading_indicator';
 import ScrollContainer from 'flavours/glitch/containers/scroll_container';
 import BundleColumnError from 'flavours/glitch/features/ui/components/bundle_column_error';
-import { identityContextPropShape, withIdentity } from 'flavours/glitch/identity_context';
-import { autoUnfoldCW } from 'flavours/glitch/utils/content_warning';
-import { WithRouterPropTypes } from 'flavours/glitch/utils/react_router';
+import {identityContextPropShape, withIdentity} from 'flavours/glitch/identity_context';
+import {autoUnfoldCW} from 'flavours/glitch/utils/content_warning';
+import {WithRouterPropTypes} from 'flavours/glitch/utils/react_router';
 
-import { initBlockModal } from '../../actions/blocks';
+import {initBlockModal} from '../../actions/blocks';
+import {directCompose, mentionCompose, replyCompose,} from '../../actions/compose';
 import {
-  replyCompose,
-  mentionCompose,
-  directCompose,
-} from '../../actions/compose';
-import {
-  favourite,
-  unfavourite,
-  bookmark,
-  unbookmark,
-  reblog,
-  unreblog,
-  pin,
-  unpin,
   addReaction,
+  bookmark,
+  pin,
   removeReaction,
+  toggleFavourite,
+  toggleReblog,
+  unbookmark,
+  unpin,
 } from '../../actions/interactions';
-import { changeLocalSetting } from '../../actions/local_settings';
-import { openModal } from '../../actions/modal';
-import { initMuteModal } from '../../actions/mutes';
-import { initReport } from '../../actions/reports';
+import {changeLocalSetting} from '../../actions/local_settings';
+import {openModal} from '../../actions/modal';
+import {initMuteModal} from '../../actions/mutes';
+import {initReport} from '../../actions/reports';
 import {
-  fetchStatus,
-  muteStatus,
-  unmuteStatus,
   deleteStatus,
   editStatus,
+  fetchStatus,
   hideStatus,
+  muteStatus,
   revealStatus,
   translateStatus,
   undoStatusTranslation,
+  unmuteStatus,
 } from '../../actions/statuses';
 import ColumnHeader from '../../components/column_header';
-import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
+import {defaultMediaVisibility, textForScreenReader} from '../../components/status';
 import StatusContainer from '../../containers/status_container';
-import { boostModal, favouriteModal, deleteModal } from '../../initial_state';
-import { makeGetStatus, makeGetPictureInPicture } from '../../selectors';
+import {deleteModal} from '../../initial_state';
+import {makeGetPictureInPicture, makeGetStatus} from '../../selectors';
 import Column from '../ui/components/column';
-import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
+import {attachFullscreenListener, detachFullscreenListener, isFullscreen} from '../ui/util/fullscreen';
 
 import ActionBar from './components/action_bar';
 import DetailedStatus from './components/detailed_status';
@@ -270,30 +264,13 @@ class Status extends ImmutablePureComponent {
     this.setState({ showMedia: !this.state.showMedia });
   };
 
-  handleModalFavourite = (status) => {
-    this.props.dispatch(favourite(status));
-  };
 
   handleFavouriteClick = (status, e) => {
     const { dispatch } = this.props;
     const { signedIn } = this.props.identity;
 
     if (signedIn) {
-      if (status.get('favourited')) {
-        dispatch(unfavourite(status));
-      } else {
-        if ((e && e.shiftKey) || !favouriteModal) {
-          this.handleModalFavourite(status);
-        } else {
-          dispatch(openModal({
-            modalType: 'FAVOURITE',
-            modalProps: {
-              status,
-              onFavourite: this.handleModalFavourite,
-            },
-          }));
-        }
-      }
+      dispatch(toggleFavourite(status.get('id'), e && e.shiftKey));
     } else {
       dispatch(openModal({
         modalType: 'INTERACTION',
@@ -339,11 +316,11 @@ class Status extends ImmutablePureComponent {
             message: intl.formatMessage(messages.replyMessage),
             confirm: intl.formatMessage(messages.replyConfirm),
             onDoNotAsk: () => dispatch(changeLocalSetting(['confirm_before_clearing_draft'], false)),
-            onConfirm: () => dispatch(replyCompose(status, this.props.history)),
+            onConfirm: () => dispatch(replyCompose(status)),
           },
         }));
       } else {
-        dispatch(replyCompose(status, this.props.history));
+        dispatch(replyCompose(status));
       }
     } else {
       dispatch(openModal({
@@ -357,28 +334,12 @@ class Status extends ImmutablePureComponent {
     }
   };
 
-  handleModalReblog = (status, privacy) => {
-    const { dispatch } = this.props;
-
-    if (status.get('reblogged')) {
-      dispatch(unreblog({ statusId: status.get('id') }));
-    } else {
-      dispatch(reblog({ statusId: status.get('id'), visibility: privacy }));
-    }
-  };
-
   handleReblogClick = (status, e) => {
-    const { settings, dispatch } = this.props;
+    const { dispatch } = this.props;
     const { signedIn } = this.props.identity;
 
     if (signedIn) {
-      if (settings.get('confirm_boost_missing_media_description') && status.get('media_attachments').some(item => !item.get('description')) && !status.get('reblogged')) {
-        dispatch(openModal({ modalType: 'BOOST', modalProps: { status, onReblog: this.handleModalReblog, missingMediaDescription: true } }));
-      } else if ((e && e.shiftKey) || !boostModal) {
-        this.handleModalReblog(status);
-      } else {
-        dispatch(openModal({ modalType: 'BOOST', modalProps: { status, onReblog: this.handleModalReblog } }));
-      }
+      dispatch(toggleReblog(status.get('id'), e && e.shiftKey));
     } else {
       dispatch(openModal({
         modalType: 'INTERACTION',
@@ -399,33 +360,33 @@ class Status extends ImmutablePureComponent {
     }
   };
 
-  handleDeleteClick = (status, history, withRedraft = false) => {
+  handleDeleteClick = (status, withRedraft = false) => {
     const { dispatch, intl } = this.props;
 
     if (!deleteModal) {
-      dispatch(deleteStatus(status.get('id'), history, withRedraft));
+      dispatch(deleteStatus(status.get('id'), withRedraft));
     } else {
       dispatch(openModal({
         modalType: 'CONFIRM',
         modalProps: {
           message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
           confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
-          onConfirm: () => dispatch(deleteStatus(status.get('id'), history, withRedraft)),
+          onConfirm: () => dispatch(deleteStatus(status.get('id'), withRedraft)),
         },
       }));
     }
   };
 
-  handleEditClick = (status, history) => {
-    this.props.dispatch(editStatus(status.get('id'), history));
+  handleEditClick = (status) => {
+    this.props.dispatch(editStatus(status.get('id')));
   };
 
-  handleDirectClick = (account, history) => {
-    this.props.dispatch(directCompose(account, history));
+  handleDirectClick = (account) => {
+    this.props.dispatch(directCompose(account));
   };
 
-  handleMentionClick = (account, history) => {
-    this.props.dispatch(mentionCompose(account, history));
+  handleMentionClick = (account) => {
+    this.props.dispatch(mentionCompose(account));
   };
 
   handleOpenMedia = (media, index, lang) => {

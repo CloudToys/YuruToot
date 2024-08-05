@@ -1,21 +1,21 @@
 import PropTypes from 'prop-types';
-import { PureComponent } from 'react';
+import {PureComponent} from 'react';
 
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import {defineMessages, FormattedMessage, injectIntl} from 'react-intl';
 
 import classNames from 'classnames';
 
-import { is } from 'immutable';
+import {is} from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
-import { debounce } from 'lodash';
+import {debounce} from 'lodash';
 
 import VisibilityOffIcon from '@/material-icons/400-24px/visibility_off.svg?react';
-import { Blurhash } from 'mastodon/components/blurhash';
+import {Blurhash} from 'mastodon/components/blurhash';
 
-import { autoPlayGif, displayMedia, useBlurhash } from '../initial_state';
+import {autoPlayGif, displayMedia, useBlurhash} from '../initial_state';
 
-import { IconButton } from './icon_button';
+import {IconButton} from './icon_button';
 
 const messages = defineMessages({
   toggle_visible: { id: 'media_gallery.toggle_visible', defaultMessage: '{number, plural, one {Hide image} other {Hide images}}' },
@@ -305,13 +305,13 @@ class MediaGallery extends PureComponent {
       style.aspectRatio = '3 / 2';
     }
 
-    const size     = media.take(4).size;
+    const size     = media.size;
     const uncached = media.every(attachment => attachment.get('type') === 'unknown');
 
     if (this.isFullSizeEligible()) {
       children = <Item standalone autoplay={autoplay} onClick={this.handleClick} attachment={media.get(0)} lang={lang} displayWidth={width} visible={visible} />;
     } else {
-      children = media.take(4).map((attachment, i) => <Item key={attachment.get('id')} autoplay={autoplay} onClick={this.handleClick} attachment={attachment} index={i} lang={lang} size={size} displayWidth={width} visible={visible || uncached} />);
+      children = media.map((attachment, i) => <Item key={attachment.get('id')} autoplay={autoplay} onClick={this.handleClick} attachment={attachment} index={i} lang={lang} size={size} displayWidth={width} visible={visible || uncached} />);
     }
 
     if (uncached) {

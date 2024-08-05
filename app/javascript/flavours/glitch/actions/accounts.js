@@ -1,16 +1,25 @@
-import api, { getLinks } from '../api';
+import {browserHistory} from 'flavours/glitch/components/router';
+
+import api, {getLinks} from '../api';
 
 import {
-  followAccountSuccess, unfollowAccountSuccess,
-  authorizeFollowRequestSuccess, rejectFollowRequestSuccess,
-  followAccountRequest, followAccountFail,
-  unfollowAccountRequest, unfollowAccountFail,
-  muteAccountSuccess, unmuteAccountSuccess,
-  blockAccountSuccess, unblockAccountSuccess,
-  pinAccountSuccess, unpinAccountSuccess,
+  authorizeFollowRequestSuccess,
+  blockAccountSuccess,
   fetchRelationshipsSuccess,
+  followAccountFail,
+  followAccountRequest,
+  followAccountSuccess,
+  muteAccountSuccess,
+  pinAccountSuccess,
+  rejectFollowRequestSuccess,
+  unblockAccountSuccess,
+  unfollowAccountFail,
+  unfollowAccountRequest,
+  unfollowAccountSuccess,
+  unmuteAccountSuccess,
+  unpinAccountSuccess,
 } from './accounts_typed';
-import { importFetchedAccount, importFetchedAccounts } from './importer';
+import {importFetchedAccount, importFetchedAccounts} from './importer';
 
 export const ACCOUNT_FETCH_REQUEST = 'ACCOUNT_FETCH_REQUEST';
 export const ACCOUNT_FETCH_SUCCESS = 'ACCOUNT_FETCH_SUCCESS';
@@ -720,6 +729,16 @@ export const updateAccount = ({ displayName, note, avatar, header, discoverable,
   return api().patch('/api/v1/accounts/update_credentials', data).then(response => {
     dispatch(importFetchedAccount(response.data));
   });
+};
+
+export const navigateToProfile = (accountId) => {
+  return (_dispatch, getState) => {
+    const acct = getState().accounts.getIn([accountId, 'acct']);
+
+    if (acct) {
+      browserHistory.push(`/@${acct}`);
+    }
+  };
 };
 
 export function fetchPinnedAccountsSuggestions(q) {

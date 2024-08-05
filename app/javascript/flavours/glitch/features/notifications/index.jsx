@@ -1,44 +1,44 @@
 import PropTypes from 'prop-types';
-import { PureComponent } from 'react';
+import {PureComponent} from 'react';
 
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import {defineMessages, FormattedMessage, injectIntl} from 'react-intl';
 
 import classNames from 'classnames';
-import { Helmet } from 'react-helmet';
+import {Helmet} from 'react-helmet';
 
-import { createSelector } from '@reduxjs/toolkit';
-import { List as ImmutableList } from 'immutable';
+import {createSelector} from '@reduxjs/toolkit';
+import {List as ImmutableList} from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
-import { debounce } from 'lodash';
+import {debounce} from 'lodash';
 
 import DeleteForeverIcon from '@/material-icons/400-24px/delete_forever.svg?react';
 import DoneAllIcon from '@/material-icons/400-24px/done_all.svg?react';
 import NotificationsIcon from '@/material-icons/400-24px/notifications-fill.svg?react';
-import { compareId } from 'flavours/glitch/compare_id';
-import { Icon }  from 'flavours/glitch/components/icon';
-import { NotSignedInIndicator } from 'flavours/glitch/components/not_signed_in_indicator';
-import { identityContextPropShape, withIdentity } from 'flavours/glitch/identity_context';
+import {compareId} from 'flavours/glitch/compare_id';
+import {Icon} from 'flavours/glitch/components/icon';
+import {NotSignedInIndicator} from 'flavours/glitch/components/not_signed_in_indicator';
+import {identityContextPropShape, withIdentity} from 'flavours/glitch/identity_context';
 
-import { addColumn, removeColumn, moveColumn } from '../../actions/columns';
-import { submitMarkers } from '../../actions/markers';
+import {addColumn, moveColumn, removeColumn} from '../../actions/columns';
+import {submitMarkers} from '../../actions/markers';
 import {
   enterNotificationClearingMode,
   expandNotifications,
-  scrollTopNotifications,
   loadPending,
-  mountNotifications,
-  unmountNotifications,
   markNotificationsAsRead,
+  mountNotifications,
+  scrollTopNotifications,
+  unmountNotifications,
 } from '../../actions/notifications';
 import Column from '../../components/column';
 import ColumnHeader from '../../components/column_header';
-import { LoadGap } from '../../components/load_gap';
+import {LoadGap} from '../../components/load_gap';
 import ScrollableList from '../../components/scrollable_list';
 import NotificationPurgeButtonsContainer from '../../containers/notification_purge_buttons_container';
 
-import { FilteredNotificationsBanner } from './components/filtered_notifications_banner';
+import {FilteredNotificationsBanner} from './components/filtered_notifications_banner';
 import NotificationsPermissionBanner from './components/notifications_permission_banner';
 import ColumnSettingsContainer from './containers/column_settings_container';
 import FilterBarContainer from './containers/filter_bar_container';
@@ -237,7 +237,7 @@ class Notifications extends PureComponent {
         <LoadGap
           key={'gap:' + notifications.getIn([index + 1, 'id'])}
           disabled={isLoading}
-          maxId={index > 0 ? notifications.getIn([index - 1, 'id']) : null}
+          param={index > 0 ? notifications.getIn([index - 1, 'id']) : null}
           onClick={this.handleLoadGap}
         />
       ) : (
@@ -258,6 +258,13 @@ class Notifications extends PureComponent {
 
     let scrollContainer;
 
+    const prepend = (
+      <>
+        {needsNotificationPermission && <NotificationsPermissionBanner />}
+        <FilteredNotificationsBanner />
+      </>
+    );
+
     if (signedIn) {
       scrollContainer = (
         <ScrollableList
@@ -267,7 +274,7 @@ class Notifications extends PureComponent {
           showLoading={isLoading && notifications.size === 0}
           hasMore={hasMore}
           numPending={numPending}
-          prepend={needsNotificationPermission && <NotificationsPermissionBanner />}
+          prepend={prepend}
           alwaysPrepend
           emptyMessage={emptyMessage}
           onLoadMore={this.handleLoadOlder}
@@ -355,8 +362,6 @@ class Notifications extends PureComponent {
         </ColumnHeader>
 
         {filterBarContainer}
-
-        <FilteredNotificationsBanner />
 
         {scrollContainer}
 

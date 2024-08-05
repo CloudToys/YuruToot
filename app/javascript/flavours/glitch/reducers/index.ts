@@ -1,9 +1,9 @@
-import { Record as ImmutableRecord } from 'immutable';
+import {Record as ImmutableRecord} from 'immutable';
 
-import { loadingBarReducer } from 'react-redux-loading-bar';
-import { combineReducers } from 'redux-immutable';
+import {loadingBarReducer} from 'react-redux-loading-bar';
+import {combineReducers} from 'redux-immutable';
 
-import { accountsReducer } from './accounts';
+import {accountsReducer} from './accounts';
 import accounts_map from './accounts_map';
 import alerts from './alerts';
 import announcements from './announcements';
@@ -12,7 +12,7 @@ import contexts from './contexts';
 import conversations from './conversations';
 import custom_emojis from './custom_emojis';
 import domain_lists from './domain_lists';
-import { dropdownMenuReducer } from './dropdown_menu';
+import {dropdownMenuReducer} from './dropdown_menu';
 import filters from './filters';
 import followed_tags from './followed_tags';
 import height_cache from './height_cache';
@@ -21,18 +21,19 @@ import listAdder from './list_adder';
 import listEditor from './list_editor';
 import lists from './lists';
 import local_settings from './local_settings';
-import { markersReducer } from './markers';
+import {markersReducer} from './markers';
 import media_attachments from './media_attachments';
 import meta from './meta';
-import { modalReducer } from './modal';
-import { notificationPolicyReducer } from './notification_policy';
-import { notificationRequestsReducer } from './notification_requests';
+import {modalReducer} from './modal';
+import {notificationGroupsReducer} from './notification_groups';
+import {notificationPolicyReducer} from './notification_policy';
+import {notificationRequestsReducer} from './notification_requests';
 import notifications from './notifications';
-import { pictureInPictureReducer } from './picture_in_picture';
+import {pictureInPictureReducer} from './picture_in_picture';
 import pinnedAccountsEditor from './pinned_accounts_editor';
 import polls from './polls';
 import push_notifications from './push_notifications';
-import { relationshipsReducer } from './relationships';
+import {relationshipsReducer} from './relationships';
 import search from './search';
 import server from './server';
 import settings from './settings';
@@ -68,6 +69,7 @@ const reducers = {
   search,
   media_attachments,
   notifications,
+  notificationGroups: notificationGroupsReducer,
   height_cache,
   custom_emojis,
   lists,

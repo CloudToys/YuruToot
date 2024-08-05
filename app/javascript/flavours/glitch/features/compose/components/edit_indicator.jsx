@@ -1,17 +1,18 @@
-import { useCallback } from 'react';
+import {useCallback} from 'react';
 
-import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
+import {defineMessages, FormattedMessage, useIntl} from 'react-intl';
 
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import BarChart4BarsIcon from '@/material-icons/400-24px/bar_chart_4_bars.svg?react';
 import CloseIcon from '@/material-icons/400-24px/close.svg?react';
 import PhotoLibraryIcon from '@/material-icons/400-24px/photo_library.svg?react';
-import { cancelReplyCompose } from 'flavours/glitch/actions/compose';
-import { Icon } from 'flavours/glitch/components/icon';
-import { IconButton } from 'flavours/glitch/components/icon_button';
-import { Permalink } from 'flavours/glitch/components/permalink';
-import { RelativeTimestamp } from 'flavours/glitch/components/relative_timestamp';
+import {cancelReplyCompose} from 'flavours/glitch/actions/compose';
+import {Icon} from 'flavours/glitch/components/icon';
+import {IconButton} from 'flavours/glitch/components/icon_button';
+import {Permalink} from 'flavours/glitch/components/permalink';
+import {RelativeTimestamp} from 'flavours/glitch/components/relative_timestamp';
+import {EmbeddedStatusContent} from 'flavours/glitch/features/notifications_v2/components/embedded_status_content';
 
 const messages = defineMessages({
   cancel: { id: 'reply_indicator.cancel', defaultMessage: 'Cancel' },
@@ -32,8 +33,6 @@ export const EditIndicator = () => {
     return null;
   }
 
-  const content = { __html: status.get('contentHtml') };
-
   return (
     <div className='edit-indicator'>
       <div className='edit-indicator__header'>
@@ -48,7 +47,12 @@ export const EditIndicator = () => {
         </div>
       </div>
 
-      <div className='edit-indicator__content translate' dangerouslySetInnerHTML={content} />
+      <EmbeddedStatusContent
+        className='edit-indicator__content translate'
+        content={status.get('contentHtml')}
+        language={status.get('language')}
+        mentions={status.get('mentions')}
+      />
 
       {(status.get('poll') || status.get('media_attachments').size > 0) && (
         <div className='edit-indicator__attachments'>

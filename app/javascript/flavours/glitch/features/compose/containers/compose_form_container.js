@@ -1,23 +1,21 @@
-import { defineMessages, injectIntl } from 'react-intl';
+import {defineMessages, injectIntl} from 'react-intl';
 
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
-import { privacyPreference } from 'flavours/glitch/utils/privacy_preference';
+import {privacyPreference} from 'flavours/glitch/utils/privacy_preference';
 
 import {
   changeCompose,
-  submitCompose,
+  changeComposeSpoilerText,
   clearComposeSuggestions,
   fetchComposeSuggestions,
-  selectComposeSuggestion,
-  changeComposeSpoilerText,
   insertEmojiCompose,
+  selectComposeSuggestion,
+  submitCompose,
   uploadCompose,
 } from '../../../actions/compose';
-import { changeLocalSetting } from '../../../actions/local_settings';
-import {
-  openModal,
-} from '../../../actions/modal';
+import {changeLocalSetting} from '../../../actions/local_settings';
+import {openModal,} from '../../../actions/modal';
 import ComposeForm from '../components/compose_form';
 
 const messages = defineMessages({
@@ -82,8 +80,8 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     dispatch(changeCompose(text));
   },
 
-  onSubmit (router, overridePrivacy = null) {
-    dispatch(submitCompose(router, overridePrivacy));
+  onSubmit (overridePrivacy = null) {
+    dispatch(submitCompose(overridePrivacy));
   },
 
   onClearSuggestions () {
@@ -110,14 +108,14 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     dispatch(insertEmojiCompose(position, data, needsSpace));
   },
 
-  onMediaDescriptionConfirm (routerHistory, mediaId, overridePrivacy = null) {
+  onMediaDescriptionConfirm (mediaId, overridePrivacy = null) {
     dispatch(openModal({
       modalType: 'CONFIRM',
       modalProps: {
         message: intl.formatMessage(messages.missingDescriptionMessage),
         confirm: intl.formatMessage(messages.missingDescriptionConfirm),
         onConfirm: () => {
-          dispatch(submitCompose(routerHistory, overridePrivacy));
+          dispatch(submitCompose(overridePrivacy));
         },
         secondary: intl.formatMessage(messages.missingDescriptionEdit),
         onSecondary: () => dispatch(openModal({

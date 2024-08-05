@@ -1,11 +1,11 @@
-import { useCallback } from 'react';
+import {useCallback} from 'react';
 
-import { FormattedMessage, useIntl, defineMessages } from 'react-intl';
+import {defineMessages, FormattedMessage, useIntl} from 'react-intl';
 
-import { Helmet } from 'react-helmet';
-import { Link, Switch, Route, useHistory } from 'react-router-dom';
+import {Helmet} from 'react-helmet';
+import {Link, Route, Switch} from 'react-router-dom';
 
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 
 import illustration from '@/images/elephant_ui_conversation.svg';
@@ -14,17 +14,17 @@ import ArrowRightAltIcon from '@/material-icons/400-24px/arrow_right_alt.svg?rea
 import ContentCopyIcon from '@/material-icons/400-24px/content_copy.svg?react';
 import EditNoteIcon from '@/material-icons/400-24px/edit_note.svg?react';
 import PersonAddIcon from '@/material-icons/400-24px/person_add.svg?react';
-import { focusCompose } from 'flavours/glitch/actions/compose';
-import { Icon }  from 'flavours/glitch/components/icon';
+import {focusCompose} from 'flavours/glitch/actions/compose';
+import {Icon} from 'flavours/glitch/components/icon';
 import Column from 'flavours/glitch/features/ui/components/column';
-import { me } from 'flavours/glitch/initial_state';
-import { useAppSelector } from 'flavours/glitch/store';
-import { assetHost } from 'flavours/glitch/utils/config';
+import {me} from 'flavours/glitch/initial_state';
+import {useAppSelector} from 'flavours/glitch/store';
+import {assetHost} from 'flavours/glitch/utils/config';
 
-import { Step } from './components/step';
-import { Follows } from './follows';
-import { Profile } from './profile';
-import { Share } from './share';
+import {Step} from './components/step';
+import {Follows} from './follows';
+import {Profile} from './profile';
+import {Share} from './share';
 
 const messages = defineMessages({
   template: { id: 'onboarding.compose.template', defaultMessage: 'Hello #Mastodon!' },
@@ -34,11 +34,10 @@ const Onboarding = () => {
   const account = useAppSelector(state => state.getIn(['accounts', me]));
   const dispatch = useDispatch();
   const intl = useIntl();
-  const history = useHistory();
 
   const handleComposeClick = useCallback(() => {
-    dispatch(focusCompose(history, intl.formatMessage(messages.template)));
-  }, [dispatch, intl, history]);
+    dispatch(focusCompose(intl.formatMessage(messages.template)));
+  }, [dispatch, intl]);
 
   return (
     <Column>

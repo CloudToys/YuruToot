@@ -1,12 +1,12 @@
-import { debounce } from 'lodash';
+import {debounce} from 'lodash';
 
-import type { MarkerJSON } from 'flavours/glitch/api_types/markers';
-import { getAccessToken } from 'flavours/glitch/initial_state';
-import type { AppDispatch, RootState } from 'flavours/glitch/store';
-import { createAppAsyncThunk } from 'flavours/glitch/store/typed_functions';
+import type {MarkerJSON} from 'flavours/glitch/api_types/markers';
+import {getAccessToken} from 'flavours/glitch/initial_state';
+import type {AppDispatch, RootState} from 'flavours/glitch/store';
+import {createAppAsyncThunk} from 'flavours/glitch/store/typed_functions';
 
 import api from '../api';
-import { compareId } from '../compare_id';
+import {compareId} from '../compare_id';
 
 export const synchronouslySubmitMarkers = createAppAsyncThunk(
   'markers/submit',
@@ -75,9 +75,17 @@ interface MarkerParam {
 }
 
 function getLastNotificationId(state: RootState): string | undefined {
-  // @ts-expect-error state.notifications is not yet typed
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
-  return state.getIn(['notifications', 'lastReadId']);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+  const enableBeta = state.settings.getIn(
+    ['notifications', 'groupingBeta'],
+    false,
+  ) as boolean;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return enableBeta
+    ? state.notificationGroups.lastReadId
+    : // @ts-expect-error state.notifications is not yet typed
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      state.getIn(['notifications', 'lastReadId']);
 }
 
 const buildPostMarkersParams = (state: RootState) => {

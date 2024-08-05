@@ -1,7 +1,7 @@
-import { fromJS } from 'immutable';
+import {fromJS} from 'immutable';
 
-import type { StatusLike } from '../hashtag_bar';
-import { computeHashtagBarForStatus } from '../hashtag_bar';
+import type {StatusLike} from '../hashtag_bar';
+import {computeHashtagBarForStatus} from '../hashtag_bar';
 
 function createStatus(
   content: string,
@@ -165,7 +165,7 @@ describe('computeHashtagBarForStatus', () => {
     );
   });
 
-  it('puts the hashtags in the bar if a status content has hashtags in the only line and has a media', () => {
+  it('does not put the hashtags in the bar if a status content has hashtags in the only line and has a media', () => {
     const status = createStatus(
       '<p>This is my content! <a href="test">#hashtag</a></p>',
       ['hashtag'],

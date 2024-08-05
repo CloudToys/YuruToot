@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
-import { PureComponent } from 'react';
+import {PureComponent} from 'react';
 
-import { defineMessages, injectIntl } from 'react-intl';
+import {defineMessages, injectIntl} from 'react-intl';
 
 import classNames from 'classnames';
-import { withRouter } from 'react-router-dom';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import BookmarkIcon from '@/material-icons/400-24px/bookmark-fill.svg?react';
 import BookmarkBorderIcon from '@/material-icons/400-24px/bookmark.svg?react';
@@ -21,13 +20,12 @@ import RepeatActiveIcon from '@/svg-icons/repeat_active.svg?react';
 import RepeatDisabledIcon from '@/svg-icons/repeat_disabled.svg?react';
 import RepeatPrivateIcon from '@/svg-icons/repeat_private.svg?react';
 import RepeatPrivateActiveIcon from '@/svg-icons/repeat_private_active.svg?react';
-import { identityContextPropShape, withIdentity } from 'mastodon/identity_context';
-import { PERMISSION_MANAGE_USERS, PERMISSION_MANAGE_FEDERATION } from 'mastodon/permissions';
-import { WithRouterPropTypes } from 'mastodon/utils/react_router';
+import {identityContextPropShape, withIdentity} from 'mastodon/identity_context';
+import {PERMISSION_MANAGE_FEDERATION, PERMISSION_MANAGE_USERS} from 'mastodon/permissions';
 
-import { IconButton } from '../../../components/icon_button';
+import {IconButton} from '../../../components/icon_button';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
-import { me, maxReactions } from '../../../initial_state';
+import {maxReactions, me} from '../../../initial_state';
 import EmojiPickerDropdown from '../../compose/containers/emoji_picker_dropdown_container';
 
 const messages = defineMessages({
@@ -94,7 +92,6 @@ class ActionBar extends PureComponent {
     onPin: PropTypes.func,
     onEmbed: PropTypes.func,
     intl: PropTypes.object.isRequired,
-    ...WithRouterPropTypes,
   };
 
   handleReplyClick = () => {
@@ -118,23 +115,23 @@ class ActionBar extends PureComponent {
   };
 
   handleDeleteClick = () => {
-    this.props.onDelete(this.props.status, this.props.history);
+    this.props.onDelete(this.props.status);
   };
 
   handleRedraftClick = () => {
-    this.props.onDelete(this.props.status, this.props.history, true);
+    this.props.onDelete(this.props.status, true);
   };
 
   handleEditClick = () => {
-    this.props.onEdit(this.props.status, this.props.history);
+    this.props.onEdit(this.props.status);
   };
 
   handleDirectClick = () => {
-    this.props.onDirect(this.props.status.get('account'), this.props.history);
+    this.props.onDirect(this.props.status.get('account'));
   };
 
   handleMentionClick = () => {
-    this.props.onMention(this.props.status.get('account'), this.props.history);
+    this.props.onMention(this.props.status.get('account'));
   };
 
   handleMuteClick = () => {
@@ -351,4 +348,4 @@ class ActionBar extends PureComponent {
 
 }
 
-export default withRouter(connect(mapStateToProps)(withIdentity(injectIntl(ActionBar))));
+export default connect(mapStateToProps)(withIdentity(injectIntl(ActionBar)));

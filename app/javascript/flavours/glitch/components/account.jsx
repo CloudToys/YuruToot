@@ -1,26 +1,26 @@
 import PropTypes from 'prop-types';
-import { useCallback } from 'react';
+import {useCallback} from 'react';
 
-import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
+import {defineMessages, FormattedMessage, useIntl} from 'react-intl';
 
 import classNames from 'classnames';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import MoreHorizIcon from '@/material-icons/400-24px/more_horiz.svg?react';
-import { EmptyAccount } from 'flavours/glitch/components/empty_account';
-import { ShortNumber } from 'flavours/glitch/components/short_number';
-import { VerifiedBadge } from 'flavours/glitch/components/verified_badge';
+import {EmptyAccount} from 'flavours/glitch/components/empty_account';
+import {ShortNumber} from 'flavours/glitch/components/short_number';
+import {VerifiedBadge} from 'flavours/glitch/components/verified_badge';
 
 import DropdownMenuContainer from '../containers/dropdown_menu_container';
-import { me } from '../initial_state';
+import {me} from '../initial_state';
 
-import { Avatar } from './avatar';
-import { Button } from './button';
-import { FollowersCounter } from './counters';
-import { DisplayName } from './display_name';
-import { Permalink } from './permalink';
-import { RelativeTimestamp } from './relative_timestamp';
+import {Avatar} from './avatar';
+import {Button} from './button';
+import {FollowersCounter} from './counters';
+import {DisplayName} from './display_name';
+import {Permalink} from './permalink';
+import {RelativeTimestamp} from './relative_timestamp';
 
 const messages = defineMessages({
   follow: { id: 'account.follow', defaultMessage: 'Follow' },
@@ -131,7 +131,7 @@ const Account = ({ size = 46, account, onFollow, onBlock, onMute, onMuteNotifica
   return (
     <div className={classNames('account', { 'account--minimal': minimal })}>
       <div className='account__wrapper'>
-        <Permalink key={account.get('id')} className='account__display-name' title={account.get('acct')} href={account.get('url')} to={`/@${account.get('acct')}`}>
+        <Permalink key={account.get('id')} className='account__display-name' title={account.get('acct')} href={account.get('url')} to={`/@${account.get('acct')}`} data-hover-card-account={account.get('id')}>
           <div className='account__avatar-wrapper'>
             <Avatar account={account} size={size} />
           </div>

@@ -1,13 +1,13 @@
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import {
   changeCompose,
-  submitCompose,
+  changeComposeSpoilerText,
   clearComposeSuggestions,
   fetchComposeSuggestions,
-  selectComposeSuggestion,
-  changeComposeSpoilerText,
   insertEmojiCompose,
+  selectComposeSuggestion,
+  submitCompose,
   uploadCompose,
 } from '../../../actions/compose';
 import ComposeForm from '../components/compose_form';
@@ -37,8 +37,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(changeCompose(text));
   },
 
-  onSubmit (router) {
-    dispatch(submitCompose(router));
+  onSubmit () {
+    dispatch(submitCompose());
   },
 
   onClearSuggestions () {

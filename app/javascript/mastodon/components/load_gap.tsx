@@ -1,26 +1,26 @@
-import { useCallback } from 'react';
+import {useCallback} from 'react';
 
-import { useIntl, defineMessages } from 'react-intl';
+import {defineMessages, useIntl} from 'react-intl';
 
 import MoreHorizIcon from '@/material-icons/400-24px/more_horiz.svg?react';
-import { Icon } from 'mastodon/components/icon';
+import {Icon} from 'mastodon/components/icon';
 
 const messages = defineMessages({
   load_more: { id: 'status.load_more', defaultMessage: 'Load more' },
 });
 
-interface Props {
+interface Props<T> {
   disabled: boolean;
-  maxId: string;
-  onClick: (maxId: string) => void;
+  param: T;
+  onClick: (params: T) => void;
 }
 
-export const LoadGap: React.FC<Props> = ({ disabled, maxId, onClick }) => {
+export const LoadGap = <T,>({ disabled, param, onClick }: Props<T>) => {
   const intl = useIntl();
 
   const handleClick = useCallback(() => {
-    onClick(maxId);
-  }, [maxId, onClick]);
+    onClick(param);
+  }, [param, onClick]);
 
   return (
     <button

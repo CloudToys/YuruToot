@@ -1,30 +1,30 @@
 import PropTypes from 'prop-types';
-import { Children, cloneElement, useCallback } from 'react';
+import {Children, cloneElement, useCallback} from 'react';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import { supportsPassiveEvents } from 'detect-passive-events';
+import {supportsPassiveEvents} from 'detect-passive-events';
 
-import { scrollRight } from '../../../scroll';
+import {scrollRight} from '../../../scroll';
 import BundleContainer from '../containers/bundle_container';
 import {
-  Compose,
-  Notifications,
-  HomeTimeline,
+  BookmarkedStatuses,
   CommunityTimeline,
-  PublicTimeline,
-  HashtagTimeline,
+  Compose,
+  Directory,
   DirectTimeline,
   FavouritedStatuses,
-  BookmarkedStatuses,
+  HashtagTimeline,
+  HomeTimeline,
   ListTimeline,
-  Directory,
+  NotificationsWrapper,
+  PublicTimeline,
 } from '../util/async-components';
-import { useColumnsContext } from '../util/columns_context';
+import {useColumnsContext} from '../util/columns_context';
 
 import BundleColumnError from './bundle_column_error';
-import { ColumnLoading } from './column_loading';
+import {ColumnLoading} from './column_loading';
 import ComposePanel from './compose_panel';
 import DrawerLoading from './drawer_loading';
 import NavigationPanel from './navigation_panel';
@@ -32,7 +32,7 @@ import NavigationPanel from './navigation_panel';
 const componentMap = {
   'COMPOSE': Compose,
   'HOME': HomeTimeline,
-  'NOTIFICATIONS': Notifications,
+  'NOTIFICATIONS': NotificationsWrapper,
   'PUBLIC': PublicTimeline,
   'REMOTE': PublicTimeline,
   'COMMUNITY': CommunityTimeline,
